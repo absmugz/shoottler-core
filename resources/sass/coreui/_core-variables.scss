@@ -1,0 +1,19 @@
+// core overrides
+$navbar-bg: hsla(168, 12%, 33%, 1);
+$navbar-brand-bg: hsla(168, 12%, 33%, 1);
+$navbar-color: #fff;
+$navbar-brand-border: 0;
+$navbar-border: 0;
+$sidebar-bg: hsla(168, 12%, 33%, 1);
+$theme-colors: (
+        primary:                        #fff, //hsla(168, 100%, 33%, 1),
+        secondary:                      $gray-300,
+        success:                        $green,
+        info:                           $cyan,
+        warning:                        $yellow,
+        danger:                         $red,
+        light:                          $gray-100,
+        dark:                           $gray-800
+);
+
+
