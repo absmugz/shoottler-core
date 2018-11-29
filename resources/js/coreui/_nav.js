@@ -1,13 +1,10 @@
 export default {
   items: [
+    { divider: true },
     {
-      name : 'Shoottlerboard',
-      url  : '/dashboard',
-      icon : 'icon-speedometer',
-      badge: {
-        variant: 'primary',
-        text   : 'NEW',
-      },
+      name: 'Dashboard',
+      url : '/app/dashboard',
+      icon: 'icon-speedometer',
     },
     {
       title  : true,
@@ -20,12 +17,12 @@ export default {
     },
     {
       name: 'Colors',
-      url : '/theme/colors',
+      url : '/app/theme/colors',
       icon: 'icon-drop',
     },
     {
       name: 'Typography',
-      url : '/theme/typography',
+      url : '/app/theme/typography',
       icon: 'icon-pencil',
     },
     {
@@ -39,116 +36,116 @@ export default {
     },
     {
       name    : 'Base',
-      url     : '/base',
+      url     : '/app/base',
       icon    : 'icon-puzzle',
       children: [
         {
           name: 'Breadcrumbs',
-          url : '/base/breadcrumbs',
+          url : '/app/base/breadcrumbs',
           icon: 'icon-puzzle',
         },
         {
           name: 'Cards',
-          url : '/base/cards',
+          url : '/app/base/cards',
           icon: 'icon-puzzle',
         },
         {
           name: 'Carousels',
-          url : '/base/carousels',
+          url : '/app/base/carousels',
           icon: 'icon-puzzle',
         },
         {
           name: 'Collapses',
-          url : '/base/collapses',
+          url : '/app/base/collapses',
           icon: 'icon-puzzle',
         },
         {
           name: 'Forms',
-          url : '/base/forms',
+          url : '/app/base/forms',
           icon: 'icon-puzzle',
         },
         {
           name: 'Jumbotrons',
-          url : '/base/jumbotrons',
+          url : '/app/base/jumbotrons',
           icon: 'icon-puzzle',
         },
         {
           name: 'List Groups',
-          url : '/base/list-groups',
+          url : '/app/base/list-groups',
           icon: 'icon-puzzle',
         },
         {
           name: 'Navs',
-          url : '/base/navs',
+          url : '/app/base/navs',
           icon: 'icon-puzzle',
         },
         {
           name: 'Paginations',
-          url : '/base/paginations',
+          url : '/app/base/paginations',
           icon: 'icon-puzzle',
         },
         {
           name: 'Popovers',
-          url : '/base/popovers',
+          url : '/app/base/popovers',
           icon: 'icon-puzzle',
         },
         {
           name: 'Progress Bars',
-          url : '/base/progress-bars',
+          url : '/app/base/progress-bars',
           icon: 'icon-puzzle',
         },
         {
           name: 'Switches',
-          url : '/base/switches',
+          url : '/app/base/switches',
           icon: 'icon-puzzle',
         },
         {
           name: 'Tables',
-          url : '/base/tables',
+          url : '/app/base/tables',
           icon: 'icon-puzzle',
         },
         {
           name: 'Tooltips',
-          url : '/base/tooltips',
+          url : '/app/base/tooltips',
           icon: 'icon-puzzle',
         },
       ],
     },
     {
       name    : 'Buttons',
-      url     : '/buttons',
+      url     : '/app/buttons',
       icon    : 'icon-cursor',
       children: [
         {
           name: 'Standard Buttons',
-          url : '/buttons/standard-buttons',
+          url : '/app/buttons/standard-buttons',
           icon: 'icon-cursor',
         },
         {
           name: 'Button Groups',
-          url : '/buttons/button-groups',
+          url : '/app/buttons/button-groups',
           icon: 'icon-cursor',
         },
         {
           name: 'Dropdowns',
-          url : '/buttons/dropdowns',
+          url : '/app/buttons/dropdowns',
           icon: 'icon-cursor',
         },
         {
           name: 'Social Buttons',
-          url : '/buttons/social-buttons',
+          url : '/app/buttons/social-buttons',
           icon: 'icon-cursor',
         },
       ],
     },
     {
       name    : 'Icons',
-      url     : '/icons',
+      url     : '/app/icons',
       icon    : 'icon-star',
       children: [
         {
           name : 'Flags',
-          url  : '/icons/flags',
+          url  : '/app/icons/flags',
           icon : 'icon-star',
           badge: {
             variant: 'success',
@@ -157,7 +154,7 @@ export default {
         },
         {
           name : 'Font Awesome',
-          url  : '/icons/font-awesome',
+          url  : '/app/icons/font-awesome',
           icon : 'icon-star',
           badge: {
             variant: 'secondary',
@@ -166,41 +163,41 @@ export default {
         },
         {
           name: 'Simple Line Icons',
-          url : '/icons/simple-line-icons',
+          url : '/app/icons/simple-line-icons',
           icon: 'icon-star',
         },
       ],
     },
     {
       name: 'Charts',
-      url : '/charts',
+      url : '/app/charts',
       icon: 'icon-pie-chart',
     },
     {
       name    : 'Notifications',
-      url     : '/notifications',
+      url     : '/app/notifications',
       icon    : 'icon-bell',
       children: [
         {
           name: 'Alerts',
-          url : '/notifications/alerts',
+          url : '/app/notifications/alerts',
           icon: 'icon-bell',
         },
         {
           name: 'Badges',
-          url : '/notifications/badges',
+          url : '/app/notifications/badges',
           icon: 'icon-bell',
         },
         {
           name: 'Modals',
-          url : '/notifications/modals',
+          url : '/app/notifications/modals',
           icon: 'icon-bell',
         },
       ],
     },
     {
       name : 'Widgets',
-      url  : '/widgets',
+      url  : '/app/widgets',
       icon : 'icon-calculator',
       badge: {
         variant: 'primary',
@@ -209,7 +206,7 @@ export default {
     },
     {
       name : 'Loading',
-      url  : '/loading',
+      url  : '/app/loading',
       icon : 'icon-reload',
       badge: {
         variant: 'danger',
@@ -223,30 +220,37 @@ export default {
     },
     {
       name    : 'Pages',
-      url     : '/pages',
+      url     : '/app/pages',
       icon    : 'icon-star',
       children: [
         {
           name: 'Login',
-          url : '/pages/login',
+          url : '/app/pages/login',
           icon: 'icon-star',
         },
         {
           name: 'Register',
-          url : '/pages/register',
+          url : '/app/pages/register',
           icon: 'icon-star',
         },
         {
           name: 'Error 404',
-          url : '/pages/404',
+          url : '/app/pages/404',
           icon: 'icon-star',
         },
         {
           name: 'Error 500',
-          url : '/pages/500',
+          url : '/app/pages/500',
           icon: 'icon-star',
         },
       ],
     },
+    { divider: true },
+    {
+      name: 'Settings',
+      url : '/app/settings',
+      icon: 'icon-settings',
+    },
+
   ],
 }

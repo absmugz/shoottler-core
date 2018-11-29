@@ -12,7 +12,7 @@
           <router-view/>
         </div>
       </main>
-      <AppAside/>
+
     </div>
     <AppFooter/>
   </div>

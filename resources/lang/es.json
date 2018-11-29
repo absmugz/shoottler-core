@@ -1,0 +1,6 @@
+{
+  "Invalid Request. Please enter a username or a password.": "Solicitud inválida. Por favor introduzca un nombre de usuario y contraseña",
+  "Your credentials are incorrect. Please try again": "",
+  "Something went wrong on the server.":"",
+  "Logged out successfully":""
+}

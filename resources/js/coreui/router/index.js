@@ -12,6 +12,8 @@ import Page404 from '@/views/pages/Page404'
 import Page500 from '@/views/pages/Page500'
 import Login from '@/views/pages/Login'
 import Register from '@/views/pages/Register'
+import Logout from '@/components/logout.vue'
+import ResetPassword from '@/views/pages/ForgotPassword.vue'
 
 // Sample route
 import sample from './sample'
@@ -24,8 +26,8 @@ export default new Router({
   scrollBehavior : () => ({ y: 0 }),
   routes         : [
     {
-      path     : '/',
-      redirect : '/dashboard',
+      path     : '/app/',
+      redirect : '/app/dashboard',
       name     : 'Home',
       component: Full,
       children : [
@@ -33,9 +35,34 @@ export default new Router({
           path     : 'dashboard',
           name     : 'Dashboard',
           component: Dashboard,
+          meta     : { requiresAuth: true },
         },
         ...sample,
       ],
+    },
+    {
+      path     : '/app/login',
+      name     : 'Login',
+      component: Login,
+      props    : true,
+      meta     : { requiresVisitor: true },
+    },
+    {
+      path     : '/app/register',
+      name     : 'Register',
+      component: Register,
+      meta     : { requiresVisitor: true },
+    },
+    {
+      path     : '/app/reset-password',
+      name     : 'ResetPassword',
+      component: ResetPassword,
+      meta     : { requiresVisitor: true },
+    },
+    {
+      path     : '/app/logout',
+      name     : 'Logout',
+      component: Logout,
     },
     {
       path     : '/pages',
@@ -52,16 +79,6 @@ export default new Router({
           path     : '500',
           name     : 'Page500',
           component: Page500,
-        },
-        {
-          path     : 'login',
-          name     : 'Login',
-          component: Login,
-        },
-        {
-          path     : 'register',
-          name     : 'Register',
-          component: Register,
         },
       ],
     },

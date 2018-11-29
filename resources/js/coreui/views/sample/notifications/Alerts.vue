@@ -311,7 +311,7 @@ export default {
       this.$notify({
         type,
         title: 'Important message',
-        text : 'Hello user! This is a notification!',
+        text : 'Hello settings! This is a notification!',
       })
     },
     showSwal (type) {

@@ -2,9 +2,9 @@
   <div :class="['spinner-container', { 'full-width': fullWidth || cover, 'full-height': fullHeight || cover}]">
     <component
       :is="cVariant"
-      :size="cSize" />
+      :size="cSize" ></component>
     <div class="spinner-body">
-      <slot/>
+      <slot></slot>
     </div>
   </div>
 </template>

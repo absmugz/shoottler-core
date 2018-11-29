@@ -2,8 +2,10 @@
   <div class="sidebar">
     <SidebarHeader/>
     <SidebarForm/>
+    <company-switcher/>
     <nav class="sidebar-nav">
       <div slot="header"/>
+
       <ul class="nav">
         <template v-for="(item, index) in navItems">
           <template v-if="item.title">
@@ -106,6 +108,7 @@ import SidebarNavLink from './SidebarNavLink'
 import SidebarNavTitle from './SidebarNavTitle'
 import SidebarNavItem from './SidebarNavItem'
 import SidebarNavLabel from './SidebarNavLabel'
+import CompanySwitcher from './CompanySwitcher'
 export default {
   name : 'Sidebar',
   props: {
@@ -126,6 +129,7 @@ export default {
     SidebarNavTitle,
     SidebarNavItem,
     SidebarNavLabel,
+    CompanySwitcher
   },
   methods: {
     handleClick (e) {

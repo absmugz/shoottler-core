@@ -30,14 +30,18 @@ return [
     ],
 
     'stripe'    => [
-        'model'  => App\User::class,
+        'model'  => \App\Models\User::class,
         'key'    => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
 
-    // 'api'       => [
-    //     'url'      => env('API_URL'),
-    //     'username' => env('API_USERNAME'),
-    //     'password' => env('API_PASSWORD'),
-    // ],
+	'passport' => [
+		'client_id' => env('PASSPORT_CLIENT_ID'),
+		'client_secret' => env('PASSPORT_CLIENT_SECRET'),
+		'login_endpoint' => env('APP_URL') . env('PASSPORT_LOGIN_ENDPOINT')
+	],
+
+	'guzzle' => [
+		'verify_cert' => env('GUZZLE_VERIFY_CERT',false)
+	]
 ];
