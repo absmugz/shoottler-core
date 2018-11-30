@@ -16,6 +16,10 @@ import CreateServiceArea from '@/views/settings/user/service-areas/CreateService
 import EditServiceArea from '@/views/settings/user/service-areas/EditServiceArea'
 import ServiceAreas from '@/views/settings/user/service-areas/ServiceAreas'
 import ServiceAreasList from '@/views/settings/user/service-areas/ServiceAreasList'
+import CreateZone from '@/views/settings/user/zones/CreateZone'
+import EditZone from '@/views/settings/user/zones/EditZone'
+import Zones from '@/views/settings/user/zones/Zones'
+import ZonesList from '@/views/settings/user/zones/ZonesList'
 export default [
   base,
   buttons,
@@ -96,6 +100,31 @@ export default [
           },
         ],
       },
+      {
+        path     : 'zones',
+        name     : 'Zones',
+        redirect : '/app/settings/zones/list',
+        component: Zones,
+        children : [
+          {
+            path     : 'list',
+            name     : 'zones list',
+            component: ZonesList,
+          },
+          {
+            path     : 'create',
+            name     : 'Create a zone',
+            component: CreateZone,
+          },
+          {
+            path     : 'edit/:id',
+            name     : 'Edit Zone',
+            component: EditZone,
+            props    : true,
+          },
+        ],
+      },
+
     ],
   },
 ]

@@ -15,9 +15,12 @@ class CreateZonesTable extends Migration
     {
         Schema::create('zones', function (Blueprint $table) {
 	        $table->increments('id');
+	        $table->integer('area_id')->unsigned()->index();
 	        $table->string('name');
 	        $table->multiPolygon('boundaries');
 	        $table->timestamps();
+
+	        $table->foreign('area_id')->references('id')->on('areas')->onDelete('cascade');
         });
     }
 

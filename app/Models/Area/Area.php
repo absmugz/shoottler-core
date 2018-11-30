@@ -3,7 +3,7 @@
 namespace App\Models\Area;
 
 
-use App\Company;
+use App\Models\Company\Company;
 
 class Area extends BaseArea
 {
@@ -20,6 +20,6 @@ class Area extends BaseArea
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
     public function zones(){
-    	return $this->hasMany(Zone::class);
+    	return $this->hasMany(Zone::class,'area_id');
     }
 }

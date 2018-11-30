@@ -9,6 +9,7 @@
             <b-nav-item :to="{ name:'User Profile' }">User profile </b-nav-item>
             <b-nav-item :to="{ name:'My Companies' }">My companies</b-nav-item>
             <b-nav-item :to="{ name:'Service areas' }">Service areas</b-nav-item>
+            <b-nav-item :to="{ name:'Zones' }">Zones</b-nav-item>
           </b-nav>
         </b-col>
         <b-col>
