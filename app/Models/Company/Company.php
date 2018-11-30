@@ -1,8 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models\Company;
 
-use App\Models\User;
+use App\Models\Area\Area;
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
@@ -26,5 +27,13 @@ class Company extends Model
 	 */
     public function users(){
     	return $this->belongsToMany(User::class);
+    }
+
+	/**
+	 * This company's areas
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+    public function areas(){
+    	return $this->hasMany(Area::class);
     }
 }

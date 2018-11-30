@@ -20,7 +20,8 @@
           id="name"
           name="name"
           placeholder="Enter your company name"
-          v-model="company.name"/>
+          v-model="company.name"
+          v-validate="'required|min:8|max:255'"/>
       </b-form-group>
       <b-form-group>
         <label for="brand">Brand</label>
@@ -29,7 +30,8 @@
           id="brand"
           name="brand"
           placeholder="Your awesome trademark or brand"
-          v-model="company.brand"/>
+          v-model="company.brand"
+          v-validate="'required|min:8|max:255'"/>
       </b-form-group>
       <b-form-group>
         <label for="website">Website</label>
@@ -38,7 +40,8 @@
           id="website"
           name="website"
           placeholder="Enter your company's website"
-          v-model="company.website"/>
+          v-model="company.website"
+          v-validate="'required|url'"/>
       </b-form-group>
       <b-form-group>
         <label for="facebook">Facebook Url</label>

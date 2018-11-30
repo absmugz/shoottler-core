@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\User;
 
-use App\Company;
+use App\Models\Company\Company;
 use App\Notifications\VerifyEmailQueued;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
@@ -12,6 +12,7 @@ use Laravel\Passport\HasApiTokens;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, Notifiable;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -20,6 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'name', 'email', 'password',
     ];
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -28,6 +30,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password', 'remember_token',
     ];
+
 	/**
 	 * Override the laravel notification.
 	 * To implement queued notifications
@@ -36,6 +39,7 @@ class User extends Authenticatable implements MustVerifyEmail
 	{
 		$this->notify((new VerifyEmailQueued('web'))->delay(now()->addSeconds(5)));
 	}
+
 	/**
 	 * This settings's companies
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
