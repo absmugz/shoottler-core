@@ -13,40 +13,54 @@
           {{ value[0] }}
         </div>
       </div>
-      <GmapMap
-        ref="myMap"
-        :center="{lat:10, lng:10}"
-        :zoom="9"
-        :options="options"
-        style="width: 100%;height: 300px"
-      />
       <b-form
         id="myForm"
         @submit.prevent="validateBeforeSubmit()">
         <b-form-group>
           <label for="area">Service Area</label>
           <b-select-2
-            v-if="loaded"
             id="serviceArea"
             placeholder="Please select a service area"
             :options="items"
-            v-model="area"/>
+            v-model="area"
+            name="area"/>
         </b-form-group>
-        <span class="form-error">{{ errors.first('name') }}</span>
+        <span class="form-error">{{ errors.first('area') }}</span>
         <b-form-group>
           <label for="name">Name </label>
-          <GmapAutocomplete
-            class="form-control"
+          <b-form-input
             type="text"
             id="name"
             name="name"
             placeholder="Zone name"
             v-model="name"
             v-validate="'required|max:255'"
+          />
+        </b-form-group>
+        <span class="form-error">{{ errors.first('name') }}</span>
+        <b-form-group>
+          <label for="name">Quick jump in the map to: </label>
+          <GmapAutocomplete
+            class="form-control"
+            type="text"
+            placeholder="Jump to:"
             @place_changed="setPlace"
           />
         </b-form-group>
-        <span class="form-error">{{ errors.first('country') }}</span>
+        <span class="form-error">{{ errors.first('name') }}</span>
+        <GmapMap
+          ref="myMap"
+          :center="{lat:10, lng:10}"
+          :zoom="10"
+          :options="options"
+          style="width: 100%;height: 300px"
+        />
+        <button @click="deleteSelectedShape()">
+          delete selected shape
+        </button>
+        <button @click="deleteAllShape()">
+          delete all shapes
+        </button>
         <b-button
           type="submit"
           variant="primary">Save</b-button>
@@ -125,8 +139,14 @@ export default {
       axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
       return new Promise((resolve, reject) => {
         axios.post('/zones/create', {
-          area: this.area,
-          name: this.name,
+          area      : this.area,
+          name      : this.name,
+          boundaries: this.all_overlays.map((polygon) => {
+            const rBoundaries      = {}
+            if (polygon.overlay.map)
+              rBoundaries.wktPolygon = polygon.overlay.ToWKT()
+            return rBoundaries
+          }),
         })
           .then((response) => {
             this.$router.push({ name: 'zones list' })
@@ -158,29 +178,20 @@ export default {
             fillColor   : '#ffff00',
             fillOpacity : 0.5,
             strokeWeight: 3,
-            clickable   : false,
-            editable    : false,
+            clickable   : true,
+            editable    : true,
             zIndex      : 1,
           },
         })
         drawingManager.setMap(map)
-        this.google.maps.event.addListener(drawingManager, 'polygoncomplete', function (polygon) {
-          const myPoly = polygon.ToWKT()
-          const myForm = document.getElementById('myForm')
-          const input  = document.createElement('input')
-          input.type   = 'hidden'
-          input.id     = 'boundaries'
-          input.value  = myPoly
-          input.name   = 'boundaries[]'
-          input.class  = 'boundaries'
-          myForm.appendChild(input)
-        })
         this.google.maps.event.addListener(drawingManager, 'overlaycomplete', (event) => {
           this.all_overlays.push(event)
           drawingManager.setDrawingMode(null)
           const newShape = event.overlay
           newShape.type  = event.type
-          this.addListenerToNewShape(newShape)
+          this.google.maps.event.addListener(newShape, 'click', (event) => {
+            this.setSelection(newShape)
+          })
           this.setSelection(newShape)
         }
         )
@@ -218,7 +229,7 @@ export default {
     setSelection (shape) {
       this.clearSelection()
       this.selectedShape = shape
-      shape.setEditable(false)
+      shape.setEditable(true)
     },
     clearSelection () {
       if (this.selectedShape) {
@@ -230,14 +241,10 @@ export default {
       for (let i = 0; i < this.all_overlays.length; i++)
         this.all_overlays[i].overlay.setMap(null)
       this.all_overlays = []
-      const polygons    = document.getElementsByName('boundaries[]')
-      for (let i = 0; i < polygons.length; i++)
-        $('#boundaries').remove()
     },
-    addListenerToNewShape (newShape) {
-      this.google.maps.event.addListener(newShape, 'click', function () {
-        this.setSelection(newShape)
-      })
+    deleteSelectedShape () {
+      if (this.selectedShape)
+        this.selectedShape.setMap(null)
     },
   },
 }

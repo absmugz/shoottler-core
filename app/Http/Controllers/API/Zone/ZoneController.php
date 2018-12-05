@@ -37,7 +37,7 @@ class ZoneController {
 	public function store(Request $request){
 		$request->validate([
 			'area' => 'required',
-			'name' => 'required|min:8|max:255',
+			'name' => 'required|max:255',
 		]);
 		$area = Area::findOrFail($request->get('area'));
 		$zone = new Zone([

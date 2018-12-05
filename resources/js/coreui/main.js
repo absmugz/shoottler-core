@@ -38,7 +38,8 @@ Vue.use(VueGoogleMaps, {
   load: {
     key      : 'AIzaSyAlvQgM2rAdbwzUbWxuIG2P-o-nGl-JPnI',
     libraries: 'places,drawing',
-  }
+  },
+  autobindAllEvents: true,
 })
 Vue.component('b-loading', Loading)
 Vue.component('b-select-2', Select2)
