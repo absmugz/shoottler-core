@@ -38,15 +38,47 @@ class ZoneController {
 		$request->validate([
 			'area' => 'required',
 			'name' => 'required|max:255',
+			'boundaries' => 'required'
 		]);
+		$data = $request->all();
+		$wkt = '';
+		$coordinatesCount = count($data['boundaries']);
+		foreach ( $data['boundaries'] as $k => $polygon ) {
+			if (isset($polygon['wktPolygon'])) {
+				$wkt .= $polygon['wktPolygon'] . ($k == $coordinatesCount - 1 ? '':',') ;
+			}
+		}
+		$zone = new Zone($data);
+		$zone->parseGeometryToMultiPolygon('POLYGON('.$wkt.')');
 		$area = Area::findOrFail($request->get('area'));
-		$zone = new Zone([
-			'name' => $request->get('name')
-		]);
 		$area->zones()->save($zone);
 		return response()->json([
 			'zone' => $zone,
 			'message' => 'Zone created successfully'
+		],200);
+	}
+
+	/**
+	 * Update the zone with new data
+	 * @param Request $request
+	 * @param $id
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function update(Request $request, $id) {
+		$request->validate([
+			'area' => 'required',
+			'name' => 'required|max:255',
+		]);
+		$data = $request->all();
+		$zone = Zone::findOrFail($id);
+		$zone->name = $request->get('name');
+		$zone->parseBoundaries($data['boundaries']);
+		$area = Area::findOrFail($request->get('area'));
+		$area->zones()->save($zone);
+		return response()->json([
+			'data' => $zone,
+			'message' => 'Zone updated successfully',
 		],200);
 	}
 

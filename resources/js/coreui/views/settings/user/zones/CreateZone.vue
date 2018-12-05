@@ -55,12 +55,12 @@
           :options="options"
           style="width: 100%;height: 300px"
         />
-        <button @click="deleteSelectedShape()">
+        <b-button @click="deleteSelectedShape()">
           delete selected shape
-        </button>
-        <button @click="deleteAllShape()">
+        </b-button>
+        <b-button @click="deleteAllShape()">
           delete all shapes
-        </button>
+        </b-button>
         <b-button
           type="submit"
           variant="primary">Save</b-button>
@@ -143,7 +143,7 @@ export default {
           name      : this.name,
           boundaries: this.all_overlays.map((polygon) => {
             const rBoundaries      = {}
-            if (polygon.overlay.map)
+            if (polygon.overlay.map !== null)
               rBoundaries.wktPolygon = polygon.overlay.ToWKT()
             return rBoundaries
           }),

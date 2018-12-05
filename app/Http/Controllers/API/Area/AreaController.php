@@ -18,6 +18,7 @@ use App\Models\Company\Company;
 use Illuminate\Http\Request;
 
 class AreaController {
+
 	/**
 	 * List the areas of the given company
 	 * @param Request $request
@@ -80,6 +81,27 @@ class AreaController {
 		],201);
 	}
 
+	public function update(Request $request, $id) {
+		$area = Area::findOrFail($id);
+		$request->validate([
+			'name' => 'required|max:255',
+			'country' => 'required|max:255',
+			'city' => 'required|max:255',
+		]);
+		$data = [
+			'name' => $request->get('name'),
+			'country' => $request->get('country'),
+			'city' => $request->get('city'),
+			'IATA' => $request->get('IATA'),
+			'ICAO' => $request->get('ICAO'),
+			'FAA' => $request->get('FAA')
+		];
+		$area->update($data);
+		return response()->json([
+			'data' => $area,
+			'message' => 'Area updated successfully'
+		],200);
+	}
 	/**
 	 * Delete a service area
 	 * @param $id

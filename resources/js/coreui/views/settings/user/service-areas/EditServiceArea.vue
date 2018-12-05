@@ -21,7 +21,7 @@
           name="name"
           placeholder="Service Area Name"
           v-model="area.name"
-          v-validate="'required|min:8|max:255'"/>
+          v-validate="'required|max:255'"/>
       </b-form-group>
       <b-form-group>
         <label for="brand">Country</label>
@@ -31,7 +31,7 @@
           name="country"
           placeholder="Country"
           v-model="area.country"
-          v-validate="'required|min:8|max:255'"/>
+          v-validate="'required|max:255'"/>
       </b-form-group>
       <b-form-group>
         <label for="website">City</label>
@@ -41,7 +41,7 @@
           name="city"
           placeholder="City"
           v-model="area.city"
-          v-validate="'required|min:8|max:255'"/>
+          v-validate="'required|max:255'"/>
       </b-form-group>
       <b-form-group>
         <label for="IATA">IATA Code</label>

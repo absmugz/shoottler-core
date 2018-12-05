@@ -43,4 +43,22 @@ class Zone extends Model
 	{
 		return $this->boundaries = MultiPolygon::fromWKT($geometry);
 	}
+
+	/**
+	 * Parse boundaries from frontend
+	 *
+	 * @param $boundaries
+	 */
+	public function parseBoundaries($boundaries) {
+		if (! empty($boundaries)) {
+			$wkt = '';
+			$coordinatesCount = count($boundaries);
+			foreach ( $boundaries as $k => $polygon ) {
+				if (isset($polygon['wktPolygon'])) {
+					$wkt .= $polygon['wktPolygon'] . ($k == $coordinatesCount - 1 ? '':',') ;
+				}
+			}
+			$this->parseGeometryToMultiPolygon('POLYGON('.$wkt.')');
+		}
+	}
 }
