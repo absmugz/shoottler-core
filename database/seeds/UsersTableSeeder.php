@@ -11,9 +11,9 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-	    factory(\App\Models\User::class, 5)->create()->each(function ($user){
+	    factory(\App\Models\User\User::class, 5)->create()->each(function ($user){
 	    	$i = random_int(0,4);
-		    $user->companies()->attach(factory(\App\Company::class,$i)->create());
+		    $user->companies()->attach(factory(\App\Models\Company\Company::class,$i)->create());
 	    });
     }
 }

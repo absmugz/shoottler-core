@@ -6,12 +6,20 @@ import buttons from './buttons'
 import icons from './icons'
 import notifications from './notifications'
 import theme from './theme'
-import Settings from '@/views/settings/settings'
+import Settings from '@/views/settings/Settings'
 import UserProfile from '@/views/settings/user/profile'
 import MyCompanies from '@/views/settings/user/companies/MyCompanies'
 import CreateCompany from '@/views/settings/user/companies/CreateCompany'
 import EditCompany from '@/views/settings/user/companies/EditCompany'
-import MyCompaniesList from '@/views/settings/user/companies/List'
+import MyCompaniesList from '@/views/settings/user/companies/MyCompaniesList'
+import CreateServiceArea from '@/views/settings/user/service-areas/CreateServiceArea'
+import EditServiceArea from '@/views/settings/user/service-areas/EditServiceArea'
+import ServiceAreas from '@/views/settings/user/service-areas/ServiceAreas'
+import ServiceAreasList from '@/views/settings/user/service-areas/ServiceAreasList'
+import CreateZone from '@/views/settings/user/zones/CreateZone'
+import EditZone from '@/views/settings/user/zones/EditZone'
+import Zones from '@/views/settings/user/zones/Zones'
+import ZonesList from '@/views/settings/user/zones/ZonesList'
 export default [
   base,
   buttons,
@@ -52,7 +60,7 @@ export default [
         children : [
           {
             path     : 'list',
-            name     : 'List',
+            name     : 'companies list',
             component: MyCompaniesList,
           },
           {
@@ -68,6 +76,55 @@ export default [
           },
         ],
       },
+      {
+        path     : 'service-areas',
+        name     : 'Service areas',
+        redirect : '/app/settings/service-areas/list',
+        component: ServiceAreas,
+        children : [
+          {
+            path     : 'list',
+            name     : 'service areas list',
+            component: ServiceAreasList,
+          },
+          {
+            path     : 'create',
+            name     : 'Create a service area',
+            component: CreateServiceArea,
+          },
+          {
+            path     : 'edit/:id',
+            name     : 'Edit Service Area',
+            component: EditServiceArea,
+            props    : true,
+          },
+        ],
+      },
+      {
+        path     : 'zones',
+        name     : 'Zones',
+        redirect : '/app/settings/zones/list',
+        component: Zones,
+        children : [
+          {
+            path     : 'list',
+            name     : 'zones list',
+            component: ZonesList,
+          },
+          {
+            path     : 'create',
+            name     : 'Create a zone',
+            component: CreateZone,
+          },
+          {
+            path     : 'edit/:id',
+            name     : 'Edit Zone',
+            component: EditZone,
+            props    : true,
+          },
+        ],
+      },
+
     ],
   },
 ]

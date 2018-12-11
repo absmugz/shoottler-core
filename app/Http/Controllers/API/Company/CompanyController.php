@@ -8,7 +8,7 @@
 
 namespace App\Http\Controllers\API\Company;
 
-use App\Company;
+use App\Models\Company\Company;
 use App\Http\Resources\CompanyCollection;
 use App\Http\Resources\CompanyResource;
 use Illuminate\Http\Request;

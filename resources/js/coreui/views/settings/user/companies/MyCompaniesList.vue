@@ -2,7 +2,7 @@
   <div class="animated fadeIn">
     <b-row>
       <b-col>
-        <h4><router-link :to="{ name:'Create Company' }">Create a new company</router-link></h4>
+        <h4><router-link :to="{ name:'Create a company' }">Create a new company</router-link></h4>
         <companies-table caption="<i class='fa fa-align-justify'></i> Companies Table"/>
       </b-col><!--/.col-->
     </b-row>
