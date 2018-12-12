@@ -4,11 +4,11 @@
       <component
         :is="wrapper.element"
         v-bind="wrapper.attributes">
-        {{ name }}
+        <i :class="icon"/> {{ name }}
       </component>
     </template>
     <template v-else>
-      {{ name }}
+      <i :class="icon"/> {{ name }}
     </template>
   </li>
 </template>
@@ -21,6 +21,10 @@ export default {
       default: '',
     },
     classes: {
+      type   : String,
+      default: '',
+    },
+    icon: {
       type   : String,
       default: '',
     },
