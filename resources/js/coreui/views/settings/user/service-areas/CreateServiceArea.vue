@@ -153,16 +153,16 @@ export default {
     token () {
       return this.$store.state.token
     },
-    ...mapState({ activeCompanyId: state => state.activeCompany.id }),
+    ...mapState({ activeCompanyId: (state) => state.activeCompany.id }),
   },
   methods: {
     validateBeforeSubmit () {
       this.$validator.validateAll().then((result) => {
         if (result)
-          this.createCompany()
+          this.createArea()
       })
     },
-    createCompany () {
+    createArea () {
       axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
       return new Promise((resolve, reject) => {
         axios.post('/areas/create', {
@@ -179,7 +179,7 @@ export default {
             this.$router.push({ name: 'service areas list' })
             resolve(response)
           })
-          .catch(err => {
+          .catch((err) => {
             this.serverErrors = Object.values(err.response.data.errors)
             reject(err)
           })

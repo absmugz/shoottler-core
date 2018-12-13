@@ -1,7 +1,7 @@
 <template>
   <b-card v-if="loaded">
     <div slot="header">
-      <strong>Edit area</strong> <small>{{ area.name }}</small>
+      <strong>Edit vehicle</strong> <small>{{ vehicle.name }}</small>
     </div>
     <div
       v-if="serverErrors"
@@ -14,61 +14,62 @@
     </div>
     <b-form @submit.prevent="validateBeforeSubmit(id)">
       <b-form-group>
-        <label for="name">Area</label>
+        <label for="name">Vehicle</label>
         <b-form-input
           type="text"
           id="name"
           name="name"
-          placeholder="Service Area Name"
-          v-model="area.name"
+          placeholder="Vehicle's Name"
+          v-model="vehicle.name"
           v-validate="'required|max:255'"/>
       </b-form-group>
       <b-form-group>
-        <label for="country">Country</label>
+        <label for="description">Description</label>
         <b-form-input
           type="text"
-          id="country"
-          name="country"
-          placeholder="Country"
-          v-model="area.country"
+          id="description"
+          name="description"
+          placeholder="Description"
+          v-model="vehicle.description"
+        />
+      </b-form-group>
+      <b-form-group>
+        <label for="make">Make</label>
+        <b-form-input
+          type="text"
+          id="make"
+          name="make"
+          placeholder="Make"
+          v-model="vehicle.make"
+        />
+      </b-form-group>
+      <b-form-group>
+        <label for="model">Model</label>
+        <b-form-input
+          type="text"
+          id="model"
+          name="model"
+          placeholder="Model"
+          v-model="vehicle.model"/>
+      </b-form-group>
+      <b-form-group>
+        <label for="year">Year</label>
+        <b-form-input
+          type="text"
+          id="year"
+          name="year"
+          placeholder="Year"
+          v-model="vehicle.year"/>
+      </b-form-group>
+      <b-form-group>
+        <label for="capacity">Capacity</label>
+        <b-form-input
+          type="text"
+          id="capacity"
+          name="capacity"
+          placeholder="Capacity"
+          v-model="vehicle.capacity"
           v-validate="'required|max:255'"/>
-      </b-form-group>
-      <b-form-group>
-        <label for="website">City</label>
-        <b-form-input
-          type="text"
-          id="city"
-          name="city"
-          placeholder="City"
-          v-model="area.city"
-          v-validate="'required|max:255'"/>
-      </b-form-group>
-      <b-form-group>
-        <label for="IATA">IATA Code</label>
-        <b-form-input
-          type="text"
-          id="IATA"
-          name="IATA"
-          placeholder="IATA Code"
-          v-model="area.IATA"/>
-      </b-form-group>
-      <b-form-group>
-        <label for="ICAO">ICAO</label>
-        <b-form-input
-          type="text"
-          id="ICAO"
-          name="ICAO"
-          placeholder="ICAO"
-          v-model="area.ICAO"/>
-      </b-form-group>
-      <b-form-group>
-        <label for="FAA">FAA</label>
-        <b-form-input
-          type="text"
-          id="FAA"
-          name="FAA"
-          placeholder="FAA"
-          v-model="area.FAA"/>
       </b-form-group>
       <b-button
         type="submit"
@@ -79,12 +80,12 @@
     </b-form>
 
     <b-modal
-      title="You are about to delete a service area. Are you sure?"
+      title="You are about to delete a vehicle. Are you sure?"
       class="modal-danger"
       v-model="deleteWarning"
-      @ok="deleteArea(id)"
+      @ok="deleteVehicle(id)"
       ok-variant="danger">
-      When you delete a service area, all its information and all its related records get permanently erased.
+      When you delete a vehicle, all its information and all its related records get permanently erased.
       This process can't be undone.
       Proceed only if you are completely sure.
     </b-modal>
@@ -92,18 +93,17 @@
 </template>
 <script>
 export default {
-  name : 'EditServiceArea',
+  name : 'EditVehicle',
   props: { id: '' },
   data () {
     return {
-      area: {
-        type   : '',
-        name   : '',
-        country: '',
-        city   : '',
-        IATA   : '',
-        ICAO   : '',
-        FAA    : '',
+      vehicle: {
+        name       : '',
+        description: '',
+        make       : '',
+        model      : '',
+        year       : '',
+        capacity   : '',
       },
       loaded        : false,
       serverErrors  : '',
@@ -117,16 +117,16 @@ export default {
     },
   },
   mounted () {
-    this.getArea(this.id)
+    this.getVehicle(this.id)
   },
   methods: {
-    getArea (id) {
+    getVehicle (id) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
       return new Promise((resolve, reject) => {
-        axios.get(`/areas/${id}`)
+        axios.get(`/vehicles/${id}`)
           .then((response) => {
-            this.area   =  response.data.data
-            this.loaded = true
+            this.vehicle =  response.data.data
+            this.loaded  = true
             resolve(response)
           })
           .catch((err) => {
@@ -138,25 +138,24 @@ export default {
     validateBeforeSubmit (id) {
       this.$validator.validateAll().then((result) => {
         if (result)
-          this.updateArea(id)
+          this.updateVehicle(id)
       })
     },
-    updateArea (id) {
+    updateVehicle (id) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
       return new Promise((resolve, reject) => {
-        axios.post(`/areas/${id}/update`, {
-          _method: 'PUT',
-          type   : this.area.type,
-          name   : this.area.name,
-          country: this.area.country,
-          city   : this.area.city,
-          IATA   : this.area.IATA,
-          ICAO   : this.area.ICAO,
-          FAA    : this.area.FAA,
+        axios.post(`/vehicles/${id}/update`, {
+          _method    : 'PUT',
+          name       : this.vehicle.name,
+          description: this.vehicle.description,
+          make       : this.vehicle.make,
+          model      : this.vehicle.model,
+          year       : this.vehicle.year,
+          capacity   : this.vehicle.capacity,
         })
           .then((response) => {
             this.successMessage = response.data.message
-            this.$router.push({ name: 'service areas list' })
+            this.$router.push({ name: 'vehicles list' })
             resolve(response)
           })
           .catch((err) => {
@@ -165,14 +164,14 @@ export default {
           })
       })
     },
-    deleteArea (id) {
+    deleteVehicle (id) {
       this.deleteWarning                             = false
       axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
       return new Promise((resolve, reject) => {
-        axios.delete(`/areas/${id}`, { _method: 'DELETE' })
+        axios.delete(`/vehicles/${id}`, { _method: 'DELETE' })
           .then((response) => {
             this.successMessage = response.data.message
-            this.$router.push({ name: 'service areas list' })
+            this.$router.push({ name: 'vehicles list' })
             resolve(response)
           })
           .catch((err) => {

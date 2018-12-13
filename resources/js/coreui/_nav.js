@@ -8,7 +8,7 @@ export default {
     },
     {
       title  : true,
-      name   : 'Assets',
+      name   : 'Resources',
       class  : 'nav-link',
       icon   : 'icon-diamond',
       wrapper: {
@@ -17,8 +17,8 @@ export default {
       },
     },
     {
-      name: 'Resource',
-      url : '/app/theme/colors',
+      name: 'Vehicles',
+      url : '/app/vehicles',
       icon: '',
     },
     {
