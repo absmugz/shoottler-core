@@ -3,6 +3,8 @@
 namespace App\Models\Resources\Vehicles;
 
 use App\Contracts\VehicleContract;
+use App\Models\Area\Area;
+use App\Models\Company\Company;
 use App\Models\Resources\Resource;
 use App\Traits\Amenitytable;
 use App\Traits\hasFeaturedImage;
@@ -24,4 +26,11 @@ class Vehicle extends Resource implements VehicleContract
 			'model',
 			'year'
 		];
+	/**
+	 * This vehicle's area
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function company(){
+		return $this->belongsTo(Company::class);
+	}
 }

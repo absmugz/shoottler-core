@@ -15,17 +15,18 @@ class CreateResourcesTable extends Migration
     {
         Schema::create('resources', function (Blueprint $table) {
             $table->increments('id');
-	        $table->integer('area_id')->unsigned()->nullable();
+	        $table->integer('company_id')->unsigned()->index();
+	        $table->integer('area_id')->unsigned()->nullable()->index();
 	        $table->string('type');
-	        $table->string('name');
-	        $table->string('description');
+	        $table->string('name')->unique();
+	        $table->string('description')->nullable();
 	        $table->integer('capacity');
-	        //Vehicles
+	        //Vehicle
 	        $table->string('make')->nullable();
 	        $table->string('model')->nullable();
 	        $table->string('year')->nullable();
 
-	        $table->foreign('area_id')->references('id')->on('areas')->onDelete('cascade');
+	        $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
             $table->timestamps();
         });
     }

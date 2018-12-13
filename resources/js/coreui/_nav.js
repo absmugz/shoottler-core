@@ -17,7 +17,7 @@ export default {
       },
     },
     {
-      name: 'Resources',
+      name: 'Resource',
       url : '/app/theme/colors',
       icon: '',
     },

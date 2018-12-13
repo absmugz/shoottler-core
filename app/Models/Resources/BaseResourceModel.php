@@ -12,7 +12,7 @@ abstract class BaseResourceModel extends BaseModel
 
 	protected $fillable =
 		[
-			'area_id',
+			'company_id',
 			'name',
 			'description',
 			'make',
@@ -22,7 +22,7 @@ abstract class BaseResourceModel extends BaseModel
 		];
 	protected static $persisted =
 		[
-			'area_id',
+			'company_id',
 			'name',
 			'description',
 			'capacity',

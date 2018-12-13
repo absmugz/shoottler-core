@@ -33,6 +33,11 @@ Route::middleware('auth:api')->namespace('API')->group(function () {
 	Route::put('/zones/{id}/update','Zone\ZoneController@update');
 	Route::post('zones/create','Zone\ZoneController@store');
 	Route::delete('zones/{id}','Zone\ZoneController@destroy');
+	Route::get('/vehicles','Resource\Vehicle\VehicleController@index');
+	Route::get('/vehicles/{id}','Resource\Vehicle\VehicleController@show');
+	Route::put('/vehicles/{id}/update','Resource\Vehicle\VehicleController@update');
+	Route::post('vehicles/create','Resource\Vehicle\VehicleController@store');
+	Route::delete('vehicles/{id}','Resource\Vehicle\VehicleController@destroy');
 });
 
 Route::post('/email/verification/status','API\AuthController@emailVerificationStatus');
