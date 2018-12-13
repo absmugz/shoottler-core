@@ -37,7 +37,7 @@ class AreaController {
 	 * @return AreaResource
 	 */
 	public function show($id){
-			return new AreaResource(Area::findOrFail($id));
+		return new AreaResource(Area::findOrFail($id));
 	}
 
 	/**

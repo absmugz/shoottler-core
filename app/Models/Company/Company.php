@@ -4,6 +4,7 @@ namespace App\Models\Company;
 
 use App\Models\Area\Area;
 use App\Models\Area\Zone;
+use App\Models\Resources\Vehicles\Vehicle;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -45,5 +46,12 @@ class Company extends Model
 	 */
     public function zones(){
     	return $this->hasManyThrough(Zone::class,Area::class);
+    }
+	/**
+	 * This company's vehicles
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+    public function vehicles(){
+    	return $this->hasMany(Vehicle::class);
     }
 }

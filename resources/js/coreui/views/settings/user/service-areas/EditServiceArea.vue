@@ -24,7 +24,7 @@
           v-validate="'required|max:255'"/>
       </b-form-group>
       <b-form-group>
-        <label for="brand">Country</label>
+        <label for="country">Country</label>
         <b-form-input
           type="text"
           id="country"
@@ -129,7 +129,7 @@ export default {
             this.loaded = true
             resolve(response)
           })
-          .catch(err => {
+          .catch((err) => {
             this.serverErrors = Object.values(err.response.data.errors)
             reject(err)
           })
@@ -159,7 +159,7 @@ export default {
             this.$router.push({ name: 'service areas list' })
             resolve(response)
           })
-          .catch(err => {
+          .catch((err) => {
             this.serverErrors = Object.values(err.response.data.errors)
             reject(err)
           })
@@ -175,7 +175,7 @@ export default {
             this.$router.push({ name: 'service areas list' })
             resolve(response)
           })
-          .catch(err => {
+          .catch((err) => {
             this.serverErrors = Object.values(err.response.data.errors)
             reject(err)
           })

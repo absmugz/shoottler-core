@@ -20,6 +20,10 @@ import CreateZone from '@/views/settings/user/zones/CreateZone'
 import EditZone from '@/views/settings/user/zones/EditZone'
 import Zones from '@/views/settings/user/zones/Zones'
 import ZonesList from '@/views/settings/user/zones/ZonesList'
+import Vehicles from '@/views/vehicles/Vehicles'
+import CreateVehicle from '@/views/vehicles/CreateVehicle'
+import EditVehicle from '@/views/vehicles/EditVehicle'
+import VehiclesList from '@/views/vehicles/VehiclesList'
 export default [
   base,
   buttons,
@@ -125,6 +129,30 @@ export default [
         ],
       },
 
+    ],
+  },
+  {
+    path     : 'vehicles',
+    name     : 'Vehicles',
+    redirect : '/app/vehicles/list',
+    component: Vehicles,
+    children : [
+      {
+        path     : 'list',
+        name     : 'vehicles list',
+        component: VehiclesList,
+      },
+      {
+        path     : 'create',
+        name     : 'Create a vehicle',
+        component: CreateVehicle,
+      },
+      {
+        path     : 'edit/:id',
+        name     : 'Edit Vehicle',
+        component: EditVehicle,
+        props    : true,
+      },
     ],
   },
 ]

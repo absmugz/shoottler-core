@@ -11,6 +11,7 @@
           <template v-if="item.title">
             <SidebarNavTitle
               :key="index"
+              :icon="item.icon"
               :name="item.name"
               :classes="item.class"
               :wrapper="item.wrapper" />

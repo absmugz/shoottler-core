@@ -8,11 +8,9 @@
         class="img-avatar"
         alt="admin@bootstrapmaster.com">
     </template>
-    <b-dropdown-item>
-    <i class="fa fa-user"/> Profile</b-dropdown-item>
-    <b-dropdown-item>
-    <i class="fa fa-wrench"/> Settings</b-dropdown-item>
-    <b-dropdown-item :to="{ name: 'Logout' }"><i class="fa fa-lock"/> Logout</b-dropdown-item>
+    <b-dropdown-item :to="{ name: 'Settings' }">
+    <i class="icon-settings"/> Settings</b-dropdown-item>
+    <b-dropdown-item :to="{ name: 'Logout' }"><i class="icon-logout"/> Logout</b-dropdown-item>
   </b-nav-item-dropdown>
 </template>
 <script>
