@@ -15,12 +15,15 @@ class Transfer extends Service implements TransferContract
 
 	protected static $singleTableType = Transfer::class;
 
+	public static $rules = [
+		'from_zone_id' => 'required|exists:zones,id',
+		'to_zone_id' => 'required|exists:zones,id'
+	];
+
 	protected static $persisted =
 		[
 			'from_zone_id',
-			'to_zone_id',
-			'distance',
-			'discountRT'
+			'to_zone_id'
 		];
 	/**
 	 * This class is used to group to main type of

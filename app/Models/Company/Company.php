@@ -4,7 +4,8 @@ namespace App\Models\Company;
 
 use App\Models\Area\Area;
 use App\Models\Area\Zone;
-use App\Models\Items\Services\Service;
+use App\Models\Items\Item;
+use App\Models\Items\Service;
 use App\Models\Resources\Vehicles\Vehicle;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
@@ -61,5 +62,12 @@ class Company extends Model
 	 */
     public function services(){
     	return $this->hasMany(Service::class);
+    }
+	/**
+	 * This company's items
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+    public function items(){
+    	return $this->hasMany(Item::class);
     }
 }

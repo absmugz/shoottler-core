@@ -9,6 +9,8 @@
 namespace App\Models\Items;
 
 use App\Contracts\ArrivalContract;
+use App\Models\Items\Services\PrivateArrival;
+use App\Models\Items\Services\SharedArrival;
 use App\Traits\amenitytable;
 use App\Traits\hasInstructions;
 use App\Traits\isService;
@@ -21,10 +23,13 @@ class Arrival extends Service implements ArrivalContract {
 
 	protected static $singleTableType = Arrival::class;
 
+	public static $rules = [
+		'to_zone_id' => 'required|exists:zones,id'
+	];
+
 	protected static $persisted =
 		[
 			'to_zone_id',
-			'distance',
 		];
 	/**
 	 * This class is used to group to main type of

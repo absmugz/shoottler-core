@@ -55,14 +55,7 @@ class AreaController {
 			'city' => 'required|max:255',
 		]);
 		$company = Company::findOrFail($request->get('company_id'));
-		$data = [
-			'name' => $request->get('name'),
-			'country' => $request->get('country'),
-			'city' => $request->get('city'),
-			'IATA' => $request->get('IATA'),
-			'ICAO' => $request->get('ICAO'),
-			'FAA' => $request->get('FAA')
-		];
+		$data = $request->all();
 		switch ($request->get('type')) {
 			case 'airport':
 				$area = new Airport($data);
@@ -81,6 +74,13 @@ class AreaController {
 		],201);
 	}
 
+	/**
+	 * Update the service area with the new data
+	 * @param Request $request
+	 * @param $id
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
 	public function update(Request $request, $id) {
 		$area = Area::findOrFail($id);
 		$request->validate([
@@ -88,14 +88,7 @@ class AreaController {
 			'country' => 'required|max:255',
 			'city' => 'required|max:255',
 		]);
-		$data = [
-			'name' => $request->get('name'),
-			'country' => $request->get('country'),
-			'city' => $request->get('city'),
-			'IATA' => $request->get('IATA'),
-			'ICAO' => $request->get('ICAO'),
-			'FAA' => $request->get('FAA')
-		];
+		$data = $request->all();
 		$area->update($data);
 		return response()->json([
 			'data' => $area,

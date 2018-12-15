@@ -23,7 +23,7 @@ export default {
     },
     {
       name: 'Services',
-      url : '/app/theme/colors',
+      url : '/app/services',
       icon: '',
     },
     {

@@ -23,10 +23,13 @@ class Departure extends Service implements DepartureContract {
 
 	protected static $singleTableType = Departure::class;
 
+	public static $rules = [
+		'from_zone_id' => 'required|exists:zones,id'
+	];
+
 	protected static $persisted =
 		[
-			'from_zone_id',
-			'distance',
+			'from_zone_id'
 		];
 	/**
 	 * This class is used to group to main type of

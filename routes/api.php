@@ -43,6 +43,7 @@ Route::middleware('auth:api')->namespace('API')->group(function () {
 	Route::put('/services/{id}/update','Service\ServiceController@update');
 	Route::post('services/create','Service\ServiceController@store');
 	Route::delete('services/{id}','Service\ServiceController@destroy');
+	Route::get('item-types','ItemType\ItemTypeController@index');
 });
 
 Route::post('/email/verification/status','API\AuthController@emailVerificationStatus');

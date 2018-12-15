@@ -24,6 +24,10 @@ import Vehicles from '@/views/vehicles/Vehicles'
 import CreateVehicle from '@/views/vehicles/CreateVehicle'
 import EditVehicle from '@/views/vehicles/EditVehicle'
 import VehiclesList from '@/views/vehicles/VehiclesList'
+import Services from '@/views/services/Services'
+import CreateService from '@/views/services/CreateService'
+import EditService from '@/views/services/EditService'
+import ServicesList from '@/views/services/ServicesList'
 export default [
   base,
   buttons,
@@ -151,6 +155,30 @@ export default [
         path     : 'edit/:id',
         name     : 'Edit Vehicle',
         component: EditVehicle,
+        props    : true,
+      },
+    ],
+  },
+  {
+    path     : 'services',
+    name     : 'Services',
+    redirect : '/app/services/list',
+    component: Services,
+    children : [
+      {
+        path     : 'list',
+        name     : 'services list',
+        component: ServicesList,
+      },
+      {
+        path     : 'create',
+        name     : 'Create a service',
+        component: CreateService,
+      },
+      {
+        path     : 'edit/:id',
+        name     : 'Edit Service',
+        component: EditService,
         props    : true,
       },
     ],

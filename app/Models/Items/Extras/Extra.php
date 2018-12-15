@@ -3,7 +3,7 @@
 namespace App\Models\Items\Services\Extras;
 
 use App\Contracts\ExtraServiceContract;
-use App\Models\Items\Services\Service;
+use App\Models\Items\Service;
 
 class Extra extends Service implements ExtraServiceContract
 {

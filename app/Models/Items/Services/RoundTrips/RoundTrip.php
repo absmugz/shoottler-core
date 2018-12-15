@@ -17,11 +17,15 @@ class RoundTrip extends Service implements RoundTripContract
 
 	protected static $singleTableType = RoundTrip::class;
 
+	public static $rules = [
+		'from_zone_id' => 'required|exists:zones,id',
+		'to_zone_id' => 'required|exists:zones,id'
+	];
+
 	protected static $persisted =
 		[
 			'from_zone_id',
 			'to_zone_id',
-			'distance',
 		];
 	/**
 	 * This class is used to group to main type of

@@ -12,7 +12,7 @@ class PrivateTour extends Tour
 		[
 		];
 	/**
-	 * This class is used to group to main type of
+	 * This class is used to group to main types of
 	 * Private Tours
 	 * @var array
 	 */
