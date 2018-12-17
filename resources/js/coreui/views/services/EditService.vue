@@ -1,7 +1,7 @@
 <template>
   <b-card v-if="loaded">
     <div slot="header">
-      <strong>Edit service</strong> <small>{{ service.name }}</small>
+      <strong>Edit service</strong> <small>{{ service.name }} - {{ service.type }}</small>
     </div>
     <div
       v-if="serverErrors"
@@ -35,39 +35,33 @@
       </b-form-group>
       <b-form-group>
         <label for="make">Vehicle</label>
-        <b-form-input
-          type="text"
+        <b-select-2
           id="vehicle"
           name="resource_id"
           placeholder="Vehicle"
+          :options="vehicles"
+          :value="service.resource_id"
           v-model="service.resource_id"
         />
       </b-form-group>
       <b-form-group>
-        <label for="type">Type</label>
-        <b-form-input
-          type="text"
-          id="type"
-          name="type"
-          placeholder="Type"
-          v-model="service.type"/>
-      </b-form-group>
-      <b-form-group>
         <label for="from">From</label>
-        <b-form-input
-          type="text"
+        <b-select-2
           id="from"
           name="from_zone_id"
           placeholder="From"
+          :options="zones"
+          :value="service.from_zone_id"
           v-model="service.from_zone_id"/>
       </b-form-group>
       <b-form-group>
         <label for="to">To</label>
-        <b-form-input
-          type="text"
+        <b-select-2
           id="to"
           name="to_zone_id"
           placeholder="To"
+          :options="zones"
+          :value="service.to_zone_id"
           v-model="service.to_zone_id"/>
       </b-form-group>
       <b-button
@@ -91,12 +85,17 @@
   </b-card>
 </template>
 <script>
+import { createNamespacedHelpers } from 'vuex'
+const { mapState } = createNamespacedHelpers('company')
 export default {
   name : 'EditService',
   props: { id: '' },
   data () {
     return {
-      service: {
+      vehicles    : [],
+      serviceTypes: [],
+      zones       : [],
+      service     : {
         name        : '',
         description : '',
         type        : '',
@@ -114,9 +113,15 @@ export default {
     token () {
       return this.$store.state.token
     },
+    ...mapState({ activeCompanyId: (state) => state.activeCompany.id }),
   },
   mounted () {
     this.getServices(this.id)
+    if (this.activeCompanyId) {
+      this.getServiceTypes()
+      this.getVehicles()
+      this.getZones()
+    }
   },
   methods: {
     getServices (id) {
@@ -171,6 +176,66 @@ export default {
           .then((response) => {
             this.successMessage = response.data.message
             this.$router.push({ name: 'services list' })
+            resolve(response)
+          })
+          .catch((err) => {
+            this.serverErrors = Object.values(err.response.data.errors)
+            reject(err)
+          })
+      })
+    },
+    getServiceTypes () {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
+      return new Promise((resolve, reject) => {
+        axios.get('/item-types/', { params: { type: 'service' } })
+          .then((response) => {
+            this.serviceTypes = response.data.data.map((itemType) => {
+              const rItemType = {}
+              rItemType.value = itemType.id
+              rItemType.text  = itemType.name
+              return rItemType
+            })
+            this.loaded       = true
+            resolve(response)
+          })
+          .catch((err) => {
+            this.serverErrors = Object.values(err.response.data.errors)
+            reject(err)
+          })
+      })
+    },
+    getVehicles () {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
+      return new Promise((resolve, reject) => {
+        axios.get('/vehicles/', { params: { company_id: this.activeCompanyId } })
+          .then((response) => {
+            this.vehicles = response.data.data.map((vehicle) => {
+              const rVehicle = {}
+              rVehicle.value = vehicle.id
+              rVehicle.text  = vehicle.name
+              return rVehicle
+            })
+            this.loaded   = true
+            resolve(response)
+          })
+          .catch((err) => {
+            this.serverErrors = Object.values(err.response.data.errors)
+            reject(err)
+          })
+      })
+    },
+    getZones () {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
+      return new Promise((resolve, reject) => {
+        axios.get('/zones/', { params: { company_id: this.activeCompanyId } })
+          .then((response) => {
+            this.zones  = response.data.data.map((zone) => {
+              const rZone = {}
+              rZone.value = zone.id
+              rZone.text  = zone.name
+              return rZone
+            })
+            this.loaded = true
             resolve(response)
           })
           .catch((err) => {

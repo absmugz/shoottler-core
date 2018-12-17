@@ -26,11 +26,7 @@ export default {
       url : '/app/services',
       icon: '',
     },
-    {
-      name: 'Extras',
-      url : '/app/theme/colors',
-      icon: '',
-    }, /*
+    /*
     {
       title  : true,
       name   : 'Theme',

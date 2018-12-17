@@ -18,7 +18,7 @@ export default {
   name: 'HeaderDropdown',
   data: () => {
     return { itemsCount: 42 }
-  }
+  },
 }
 
 </script>
