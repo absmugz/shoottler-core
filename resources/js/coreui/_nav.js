@@ -23,14 +23,10 @@ export default {
     },
     {
       name: 'Services',
-      url : '/app/theme/colors',
+      url : '/app/services',
       icon: '',
     },
-    {
-      name: 'Extras',
-      url : '/app/theme/colors',
-      icon: '',
-    }, /*
+    /*
     {
       title  : true,
       name   : 'Theme',
