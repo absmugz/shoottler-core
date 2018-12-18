@@ -13,10 +13,12 @@ use App\Http\Resources\DatabaseNotificationCollection;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller {
 	/**
-	 * The authenticated settings
+	 * The user
 	 * @param Request $request
 	 *
 	 * @return UserResource
@@ -25,7 +27,7 @@ class UserController extends Controller {
 		return new UserResource($request->user());
 	}
 	/**
-	 * The settings's notifications
+	 * The user's notifications
 	 * @param Request $request
 	 *
 	 * @return ResourceCollection
@@ -33,5 +35,25 @@ class UserController extends Controller {
 	public function notifications(Request $request){
 		$perPage = $request->get('per_page',null);
 		return new DatabaseNotificationCollection($request->user()->notifications()->paginate($perPage));
+	}
+	public function update(Request $request){
+		$request->validate([
+			'name' => 'required|max:255',
+			'email' => [
+				'required',
+				'email',
+				Rule::unique('users','email')->ignore($request->user()->id,'id')
+				]
+			]
+		);
+		$data = $request->all();
+		if($request->has('password')){
+			$data['password'] = Hash::make($request->password);
+		}
+		$request->user()->update($data);
+		return response()->json([
+			'data' => $request->user(),
+			'message' => 'User updated successfully'
+		],200);
 	}
 }
