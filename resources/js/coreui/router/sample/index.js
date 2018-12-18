@@ -28,6 +28,10 @@ import Services from '@/views/services/Services'
 import CreateService from '@/views/services/CreateService'
 import EditService from '@/views/services/EditService'
 import ServicesList from '@/views/services/ServicesList'
+import Customers from '@/views/customers/Customers'
+import CreateCustomer from '@/views/customers/CreateCustomer'
+import EditCustomer from '@/views/customers/EditCustomer'
+import CustomersList from '@/views/customers/CustomersList'
 export default [
   base,
   buttons,
@@ -179,6 +183,30 @@ export default [
         path     : 'edit/:id',
         name     : 'Edit Service',
         component: EditService,
+        props    : true,
+      },
+    ],
+  },
+  {
+    path     : 'customers',
+    name     : 'Customers',
+    redirect : '/app/customers/list',
+    component: Customers,
+    children : [
+      {
+        path     : 'list',
+        name     : 'customers list',
+        component: CustomersList,
+      },
+      {
+        path     : 'create',
+        name     : 'Create a customer',
+        component: CreateCustomer,
+      },
+      {
+        path     : 'edit/:id',
+        name     : 'Edit Customer',
+        component: EditCustomer,
         props    : true,
       },
     ],

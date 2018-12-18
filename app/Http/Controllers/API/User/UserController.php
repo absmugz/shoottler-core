@@ -36,6 +36,14 @@ class UserController extends Controller {
 		$perPage = $request->get('per_page',null);
 		return new DatabaseNotificationCollection($request->user()->notifications()->paginate($perPage));
 	}
+
+	/**
+	 * Update the user profile
+	 *
+	 * @param Request $request
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
 	public function update(Request $request){
 		$request->validate([
 			'name' => 'required|max:255',

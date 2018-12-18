@@ -45,6 +45,12 @@ Route::middleware('auth:api')->namespace('API')->group(function () {
 	Route::post('services/create','Service\ServiceController@store');
 	Route::delete('services/{id}','Service\ServiceController@destroy');
 	Route::get('item-types','ItemType\ItemTypeController@index');
+	Route::get('/customers','Customer\CustomerController@index');
+	Route::get('/customers/{id}','Customer\CustomerController@show');
+	Route::put('/customers/{id}/update','Customer\CustomerController@update');
+	Route::post('customers/create','Customer\CustomerController@store');
+	Route::delete('customers/{id}','Customer\CustomerController@destroy');
+	Route::get('customer-types','CustomerType\CustomerTypeController@index');
 });
 
 Route::post('/email/verification/status','API\AuthController@emailVerificationStatus');

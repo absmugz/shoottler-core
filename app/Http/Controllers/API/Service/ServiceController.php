@@ -64,7 +64,8 @@ class ServiceController {
 		],201);
 	}
 
-	/** Update the service with the new data
+	/**
+	 * Update the service with the new data
 	 * @param Request $request
 	 * @param $id
 	 *

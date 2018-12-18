@@ -8,6 +8,26 @@ export default {
     },
     {
       title  : true,
+      name   : 'Sales',
+      class  : 'nav-link',
+      icon   : 'icon-layers',
+      wrapper: {
+        element   : '',
+        attributes: {},
+      },
+    },
+    {
+      name: 'Customers',
+      url : '/app/customers',
+      icon: '',
+    },
+    {
+      name: 'Bookings',
+      url : '/app/bookings',
+      icon: '',
+    },
+    {
+      title  : true,
       name   : 'Resources',
       class  : 'nav-link',
       icon   : 'icon-diamond',
