@@ -4,6 +4,7 @@ namespace App\Models\Company;
 
 use App\Models\Area\Area;
 use App\Models\Area\Zone;
+use App\Models\Booking\Booking;
 use App\Models\Customer\Base\Customer;
 use App\Models\Items\Item;
 use App\Models\Items\Service;
@@ -78,5 +79,14 @@ class Company extends Model
 	 */
     public function customers() {
     	return $this->hasMany(Customer::class);
+    }
+
+	/**
+	 * This company's bookings
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+	 */
+    public function bookings() {
+    	return $this->hasManyThrough(Booking::class,Customer::class);
     }
 }

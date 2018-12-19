@@ -51,6 +51,11 @@ Route::middleware('auth:api')->namespace('API')->group(function () {
 	Route::post('customers/create','Customer\CustomerController@store');
 	Route::delete('customers/{id}','Customer\CustomerController@destroy');
 	Route::get('customer-types','CustomerType\CustomerTypeController@index');
+	Route::get('/bookings','Booking\BookingController@index');
+	Route::get('/bookings/{id}','Booking\BookingController@show');
+	Route::put('/bookings/{id}/update','Booking\BookingController@update');
+	Route::post('bookings/create','Booking\BookingController@store');
+	Route::delete('bookings/{id}','Booking\BookingController@destroy');
 });
 
 Route::post('/email/verification/status','API\AuthController@emailVerificationStatus');

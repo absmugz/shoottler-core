@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\API\Service;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\ServiceCollection;
 use App\Http\Resources\ServiceResource;
 use App\Models\Company\Company;
@@ -16,7 +17,7 @@ use App\Models\Items\Service;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-class ServiceController {
+class ServiceController extends Controller {
 
 	/**
 	 * List the services of the given company

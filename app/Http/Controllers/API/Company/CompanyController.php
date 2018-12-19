@@ -8,12 +8,13 @@
 
 namespace App\Http\Controllers\API\Company;
 
+use App\Http\Controllers\Controller;
 use App\Models\Company\Company;
 use App\Http\Resources\CompanyCollection;
 use App\Http\Resources\CompanyResource;
 use Illuminate\Http\Request;
 
-class CompanyController {
+class CompanyController extends Controller {
 
 	/**
 	 * The authenticated user's companies

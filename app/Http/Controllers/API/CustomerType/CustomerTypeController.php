@@ -9,11 +9,12 @@
 namespace App\Http\Controllers\API\CustomerType;
 
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\CustomerTypesCollection;
 use App\Models\Customer\Type\CustomerType;
 use Illuminate\Http\Request;
 
-class CustomerTypeController {
+class CustomerTypeController extends Controller {
 
 	/**
 	 * List the Customer types

@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\API\Customer;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\CustomerCollection;
 use App\Http\Resources\CustomerResource;
 use App\Models\Company\Company;
@@ -16,7 +17,7 @@ use App\Models\Customer\Type\CustomerType;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-class CustomerController {
+class CustomerController extends Controller {
 
 	/**
 	 * List the customer of the given company
