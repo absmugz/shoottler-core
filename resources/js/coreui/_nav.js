@@ -22,7 +22,7 @@ export default {
       icon: '',
     },
     {
-      name: 'Booking',
+      name: 'Bookings',
       url : '/app/bookings',
       icon: '',
     },

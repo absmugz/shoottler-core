@@ -115,6 +115,16 @@ export default {
     },
     ...mapState({ activeCompanyId: (state) => state.activeCompany.id }),
   },
+  watch: {
+    activeCompanyId () {
+      this.serviceTypes = []
+      this.getServiceTypes()
+      this.vehicles     = []
+      this.getVehicles()
+      this.zones        = []
+      this.getZones()
+    },
+  },
   mounted () {
     this.getServices(this.id)
     if (this.activeCompanyId) {

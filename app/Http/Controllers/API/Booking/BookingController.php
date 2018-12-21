@@ -60,7 +60,7 @@ class BookingController extends Controller {
 		]);
 		$customer = Customer::findOrFail($request->input('customer_id'));
 		$bookable = Item::findOrFail($request->input('bookable_id'));
-		$booking = $customer->newBooking($bookable,$request->input('starts_at'),$request->input('ends_at'));
+		$booking = $customer->newBooking($bookable,$request->input('starts_at'),$request->input('ends_at'),$request->input('order_id'));
 		return response()->json([
 			'data' => $booking,
 			'message' => 'Booking created successfully'

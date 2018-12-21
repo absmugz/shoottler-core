@@ -9,6 +9,7 @@
 namespace App\Models\Booking;
 
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -23,7 +24,12 @@ class Booking extends Model {
 		'starts_at',
 		'ends_at'
 	];
-
+	public function getStartsAtAttribute($value){
+		return (new Carbon($value))->format('c');
+	}
+	public function getEndsAtAttribute($value){
+		return (new Carbon($value))->format('c');
+	}
 	/**
 	 * Get the owning resource model.
 	 *

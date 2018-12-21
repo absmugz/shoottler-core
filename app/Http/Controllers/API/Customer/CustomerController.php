@@ -27,7 +27,11 @@ class CustomerController extends Controller {
 	 */
 	public function index(Request $request){
 		$company = Company::findOrFail($request->get('company_id'));
-		return new CustomerCollection($company->customers);
+		return new CustomerCollection(
+			!$request->has('search') ? $company->customers :
+				Customer::search(trim($request->search))
+				        ->where('company_id','=',$company->id)
+				        ->get());
 	}
 
 	/**

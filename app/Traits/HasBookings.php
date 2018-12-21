@@ -42,14 +42,17 @@ trait HasBookings {
 	 * Book the given model at the given dates with the given price.
 	 *
 	 * @param \Illuminate\Database\Eloquent\Model $bookable
-	 * @param string                              $startsAt
-	 * @param string                              $endsAt
+	 * @param string $startsAt
+	 * @param string $endsAt
+	 *
+	 * @param null $order_id
 	 *
 	 * @return Model
 	 */
-	public function newBooking(Model $bookable, string $startsAt, string $endsAt): Model
+	public function newBooking(Model $bookable, string $startsAt, string $endsAt, $order_id = null): Model
 	{
 		return $this->bookings()->create([
+			'order_id' => $order_id,
 			'bookable_id' => $bookable->getKey(),
 			'bookable_type' => $bookable->getMorphClass(),
 			'customer_id' => $this->getKey(),

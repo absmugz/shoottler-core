@@ -32,6 +32,10 @@ import Customers from '@/views/customers/Customers'
 import CreateCustomer from '@/views/customers/CreateCustomer'
 import EditCustomer from '@/views/customers/EditCustomer'
 import CustomersList from '@/views/customers/CustomersList'
+import Bookings from '@/views/bookings/Bookings'
+import CreateBooking from '@/views/bookings/CreateBooking'
+import EditBooking from '@/views/bookings/EditBooking'
+import BookingsList from '@/views/bookings/BookingsList'
 export default [
   base,
   buttons,
@@ -207,6 +211,30 @@ export default [
         path     : 'edit/:id',
         name     : 'Edit Customer',
         component: EditCustomer,
+        props    : true,
+      },
+    ],
+  },
+  {
+    path     : 'bookings',
+    name     : 'Bookings',
+    redirect : '/app/bookings/list',
+    component: Bookings,
+    children : [
+      {
+        path     : 'list',
+        name     : 'bookings list',
+        component: BookingsList,
+      },
+      {
+        path     : 'create',
+        name     : 'Create a booking',
+        component: CreateBooking,
+      },
+      {
+        path     : 'edit/:id',
+        name     : 'Edit Booking',
+        component: EditBooking,
         props    : true,
       },
     ],

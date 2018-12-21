@@ -27,7 +27,10 @@ class ServiceController extends Controller {
 	 */
 	public function index(Request $request){
 		$company = Company::findOrFail($request->get('company_id'));
-		return new ServiceCollection($company->services);
+		return new ServiceCollection(!$request->has('search') ? $company->services :
+			Service::search(trim($request->search))
+			       ->where('company_id','=',$company->id)
+			       ->get());
 	}
 
 	/**
@@ -47,10 +50,18 @@ class ServiceController extends Controller {
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function store(Request $request){
+
 		$request->validate([
 			'company_id' => 'required',
 			'type' => 'required|exists:item_types,id',
-			'name' => 'required|max:255|unique:items,name'
+			'name' => [
+				'required',
+				'max:255',
+				Rule::unique('items')->where(function ($query) use($request) {
+					return $query->where('name', $request->input('name'))
+					             ->where('company_id', $request->input('company_id'));
+				})
+			]
 		]);
 		$data = $request->all();
 		$company = Company::findOrFail($request->get('company_id'));

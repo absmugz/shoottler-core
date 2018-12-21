@@ -20,7 +20,7 @@ class Service extends Item implements ServiceContract
 
 	protected static $persisted =
 		[
-			'duration'
+
 		];
 	/**
 	 * This class is used to group to main type of

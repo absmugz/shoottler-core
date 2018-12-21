@@ -15,16 +15,9 @@ abstract class BaseItem extends BaseModel
 			'company_id',
 			'resource_id',
 			'name',
-			'shortDescription',
 			'description',
 			'from_zone_id',
 			'to_zone_id',
-			'duration',
-			'distance',
-			'price',
-			'discount',
-			'discountRT',
-			'price_per_passenger',
 			'is_drafted'
 		];
 	protected static $persisted =
@@ -32,14 +25,13 @@ abstract class BaseItem extends BaseModel
 			'company_id',
 			'resource_id',
 			'name',
-			'shortDescription',
 			'description',
 			'price',
 			'discount',
 			'is_drafted'
 		];
 	public $searchableColumns = [
-		'name','shortDescription','description'
+		'name','description'
 	];
 	protected static $logFillable = true;
 	protected static $logOnlyDirty = true;
