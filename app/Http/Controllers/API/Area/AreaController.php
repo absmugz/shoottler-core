@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\API\Area;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\AreaCollection;
 use App\Http\Resources\AreaResource;
 use App\Models\Area\Airport;
@@ -17,7 +18,7 @@ use App\Models\Area\TrainStation;
 use App\Models\Company\Company;
 use Illuminate\Http\Request;
 
-class AreaController {
+class AreaController extends Controller {
 
 	/**
 	 * List the areas of the given company

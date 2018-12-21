@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\API\Resource\Vehicle;
 
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\VehicleCollection;
 use App\Http\Resources\VehicleResource;
 use App\Models\Company\Company;
@@ -16,7 +17,7 @@ use App\Models\Resources\Vehicles\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-class VehicleController {
+class VehicleController extends Controller {
 	/**
 	 * List the vehicles for the given company
 	 *

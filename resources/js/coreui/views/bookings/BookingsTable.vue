@@ -34,7 +34,7 @@
 <script>
 import TableActions from './Actions'
 export default {
-  name      : 'CustomersTable',
+  name      : 'BookingsTable',
   components: { TableActions },
   props     : {
     caption: {
@@ -65,10 +65,13 @@ export default {
   },
   data: () => {
     return {
-      items: [],
-      fields   : [
-        { key: 'name', label: 'Name' },
-        { key: 'type', label: 'Type' },
+      items : [],
+      fields: [
+        { key: 'customer_id', label: 'Customer' },
+        { key: 'bookable_id', label: 'Service' },
+        { key: 'order_id', label: 'Order' },
+        { key: 'starts_at', label: 'Starts At' },
+        { key: 'ends_at', label: 'Ends At' },
         { key: 'actions', label: 'Actions' },
       ],
       currentPage : 1,
@@ -85,19 +88,19 @@ export default {
   },
   mounted () {
     if (this.company)
-      this.getCustomers()
+      this.getBookings()
   },
   watch: {
     company () {
       this.items = []
-      this.getCustomers()
+      this.getBookings()
     },
   },
   methods: {
-    getCustomers () {
+    getBookings () {
       axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
       return new Promise((resolve, reject) => {
-        axios.get('/customers/', { params: { company_id: this.company } })
+        axios.get('/bookings/', { params: { company_id: this.company } })
           .then((response) => {
             this.items.push(...response.data.data)
             this.loaded = true

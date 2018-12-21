@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
 import Datepicker from 'vuejs-datepicker'
+import Datetime from 'vue-datetime'
 import { id } from 'vuejs-datepicker/dist/locale'
 import Notifications from 'vue-notification'
 import Sweetalert from 'vue-sweetalert2'
@@ -36,7 +37,7 @@ VeeValidate.Validator.extend('verify_password', {
 Vue.use(CxltToastr, toastrConfigs)
 Vue.use(VueGoogleMaps, {
   load: {
-    key      : 'AIzaSyAlvQgM2rAdbwzUbWxuIG2P-o-nGl-JPnI',
+    key      : process.env.MIX_GOOGLE_MAPS_API_KEY,
     libraries: 'places,drawing',
   },
   autobindAllEvents: true,
@@ -56,7 +57,7 @@ Vue.component('b-datepicker', {
     },
   },
 })
-
+Vue.use(Datetime)
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!store.getters.loggedIn)

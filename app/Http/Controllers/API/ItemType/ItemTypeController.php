@@ -9,11 +9,12 @@
 namespace App\Http\Controllers\API\ItemType;
 
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\ItemTypesCollection;
 use App\Models\Items\ItemType;
 use Illuminate\Http\Request;
 
-class ItemTypeController {
+class ItemTypeController extends Controller {
 
 	/**
 	 * List the Item types

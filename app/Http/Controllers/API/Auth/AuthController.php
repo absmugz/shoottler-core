@@ -17,6 +17,7 @@ class AuthController extends Controller
 	 * @param Request $request
 	 *
 	 * @return \Illuminate\Http\JsonResponse
+	 * @throws \GuzzleHttp\Exception\GuzzleException
 	 */
     public function login(Request $request){
     	return $this->getAccessToken(

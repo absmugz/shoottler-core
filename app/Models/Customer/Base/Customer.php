@@ -9,8 +9,12 @@
 namespace App\Models\Customer\Base;
 
 
+use App\Traits\HasBookings;
+
 class Customer extends BaseCustomerModel {
+	use HasBookings;
 	public static $rules = [
 
 	];
+
 }

@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\API\Zone;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\ZoneCollection;
 use App\Http\Resources\ZoneResource;
 use App\Models\Area\Area;
@@ -15,7 +16,7 @@ use App\Models\Area\Zone;
 use App\Models\Company\Company;
 use Illuminate\Http\Request;
 
-class ZoneController {
+class ZoneController extends Controller {
 
 	/**
 	 * List the zones of the given company
