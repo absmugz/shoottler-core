@@ -123,22 +123,22 @@ export default [
         path     : 'zones',
         name     : 'Zones',
         redirect : '/app/settings/zones/list',
-        component: loadView('Zones', 'settings/zones'),
+        component: loadView('Zones', 'settings/user/zones'),
         children : [
           {
             path     : 'list',
             name     : 'zones list',
-            component: loadView('ZonesList', 'settings/zones'),
+            component: loadView('ZonesList', 'settings/user/zones'),
           },
           {
             path     : 'create',
             name     : 'Create a zone',
-            component: loadView('CreateZone', 'settings/zones'),
+            component: loadView('CreateZone', 'settings/user/zones'),
           },
           {
             path     : 'edit/:id',
             name     : 'Edit Zone',
-            component: loadView('EditZone', 'settings/zones'),
+            component: loadView('EditZone', 'settings/user/zones'),
             props    : true,
           },
         ],

@@ -15,6 +15,7 @@ import store from './store'
 import VeeValidate from 'vee-validate'
 import CxltToastr from 'cxlt-vue2-toastr'
 import * as VueGoogleMaps from 'vue2-google-maps'
+import NProgress from 'nprogress/nprogress'
 
 const toastrConfigs = {
   position    : 'bottom right',
@@ -59,6 +60,7 @@ Vue.component('b-datepicker', {
 })
 Vue.use(Datetime)
 router.beforeEach((to, from, next) => {
+  NProgress.start()
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!store.getters.loggedIn)
       next({ name: 'Login' })
@@ -71,6 +73,9 @@ router.beforeEach((to, from, next) => {
       next()
   } else
     next()
+})
+router.afterEach((to, from) => {
+  NProgress.done()
 })
 
 window.Vue = new Vue({
