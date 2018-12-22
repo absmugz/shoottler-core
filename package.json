@@ -21,6 +21,8 @@
     "npm": ">= 5.6.0"
   },
   "devDependencies": {
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "babel-eslint": "^8.2.6",
     "babel-plugin-wildcard": "^5.0.0",
     "babel-preset-stage-2": "^6.24.1",
     "browser-sync-webpack-plugin": "^2.0.1",

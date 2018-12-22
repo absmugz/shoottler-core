@@ -1,4 +1,4 @@
-import Charts from '@/views/sample/Charts'
+/* import Charts from '@/views/sample/Charts'
 import Widgets from '@/views/sample/Widgets'
 import Loading from '@/views/sample/Loading'
 import base from './base'
@@ -35,14 +35,17 @@ import CustomersList from '@/views/customers/CustomersList'
 import Bookings from '@/views/bookings/Bookings'
 import CreateBooking from '@/views/bookings/CreateBooking'
 import EditBooking from '@/views/bookings/EditBooking'
-import BookingsList from '@/views/bookings/BookingsList'
+import BookingsList from '@/views/bookings/BookingsList' */
+function loadView (view, path) {
+  return () => import(/* webpackChunkName: "view-[request]" */ `@/views/${path}/${view}.vue`)
+}
 export default [
-  base,
+/*  base,
   buttons,
   icons,
   notifications,
-  theme,
-  {
+  theme, */
+/*  {
     path     : 'charts',
     name     : 'Charts',
     component: Charts,
@@ -56,38 +59,38 @@ export default [
     path     : 'loading',
     name     : 'Loading',
     component: Loading,
-  },
+  }, */
   {
     path     : 'settings',
     name     : 'Settings',
     redirect : '/app/settings/user-profile',
-    component: Settings,
+    component: loadView('Settings', 'settings'),
     children : [
       {
         path     : 'user-profile',
         name     : 'User Profile',
-        component: UserProfile,
+        component: loadView('Profile', 'settings/user'),
       },
       {
         path     : 'my-companies',
         name     : 'My Companies',
         redirect : '/app/settings/my-companies/list',
-        component: MyCompanies,
+        component: loadView('MyCompanies', 'settings/user/companies'),
         children : [
           {
             path     : 'list',
             name     : 'companies list',
-            component: MyCompaniesList,
+            component: loadView('MyCompaniesList', 'settings/user/companies'),
           },
           {
             path     : 'create-company',
             name     : 'Create a company',
-            component: CreateCompany,
+            component: loadView('CreateCompany', 'settings/user/companies'),
           },
           {
             path     : 'edit-company/:id',
             name     : 'Edit Company',
-            component: EditCompany,
+            component: loadView('EditCompany', 'settings/user/companies'),
             props    : true,
           },
         ],
@@ -96,22 +99,22 @@ export default [
         path     : 'service-areas',
         name     : 'Service areas',
         redirect : '/app/settings/service-areas/list',
-        component: ServiceAreas,
+        component: loadView('ServiceAreas', 'settings/user/service-areas'),
         children : [
           {
             path     : 'list',
             name     : 'service areas list',
-            component: ServiceAreasList,
+            component: loadView('ServiceAreasList', 'settings/user/service-areas'),
           },
           {
             path     : 'create',
             name     : 'Create a service area',
-            component: CreateServiceArea,
+            component: loadView('CreateServiceArea', 'settings/user/service-areas'),
           },
           {
             path     : 'edit/:id',
             name     : 'Edit Service Area',
-            component: EditServiceArea,
+            component: loadView('EditServiceArea', 'settings/user/service-areas'),
             props    : true,
           },
         ],
@@ -120,22 +123,22 @@ export default [
         path     : 'zones',
         name     : 'Zones',
         redirect : '/app/settings/zones/list',
-        component: Zones,
+        component: loadView('Zones', 'settings/zones'),
         children : [
           {
             path     : 'list',
             name     : 'zones list',
-            component: ZonesList,
+            component: loadView('ZonesList', 'settings/zones'),
           },
           {
             path     : 'create',
             name     : 'Create a zone',
-            component: CreateZone,
+            component: loadView('CreateZone', 'settings/zones'),
           },
           {
             path     : 'edit/:id',
             name     : 'Edit Zone',
-            component: EditZone,
+            component: loadView('EditZone', 'settings/zones'),
             props    : true,
           },
         ],
@@ -147,22 +150,22 @@ export default [
     path     : 'vehicles',
     name     : 'Vehicles',
     redirect : '/app/vehicles/list',
-    component: Vehicles,
+    component: loadView('Vehicles', 'vehicles'),
     children : [
       {
         path     : 'list',
         name     : 'vehicles list',
-        component: VehiclesList,
+        component: loadView('VehiclesList', 'vehicles'),
       },
       {
         path     : 'create',
         name     : 'Create a vehicle',
-        component: CreateVehicle,
+        component: loadView('CreateVehicle', 'vehicles'),
       },
       {
         path     : 'edit/:id',
         name     : 'Edit Vehicle',
-        component: EditVehicle,
+        component: loadView('EditVehicle', 'vehicles'),
         props    : true,
       },
     ],
@@ -171,22 +174,22 @@ export default [
     path     : 'services',
     name     : 'Services',
     redirect : '/app/services/list',
-    component: Services,
+    component: loadView('Services', 'services'),
     children : [
       {
         path     : 'list',
         name     : 'services list',
-        component: ServicesList,
+        component: loadView('ServicesList', 'services'),
       },
       {
         path     : 'create',
         name     : 'Create a service',
-        component: CreateService,
+        component: loadView('CreateService', 'services'),
       },
       {
         path     : 'edit/:id',
         name     : 'Edit Service',
-        component: EditService,
+        component: loadView('EditService', 'services'),
         props    : true,
       },
     ],
@@ -195,22 +198,22 @@ export default [
     path     : 'customers',
     name     : 'Customers',
     redirect : '/app/customers/list',
-    component: Customers,
+    component: loadView('Customers', 'customers'),
     children : [
       {
         path     : 'list',
         name     : 'customers list',
-        component: CustomersList,
+        component: loadView('CustomersList', 'customers'),
       },
       {
         path     : 'create',
         name     : 'Create a customer',
-        component: CreateCustomer,
+        component: loadView('CreateCustomer', 'customers'),
       },
       {
         path     : 'edit/:id',
         name     : 'Edit Customer',
-        component: EditCustomer,
+        component: loadView('EditCustomer', 'customers'),
         props    : true,
       },
     ],
@@ -219,22 +222,22 @@ export default [
     path     : 'bookings',
     name     : 'Bookings',
     redirect : '/app/bookings/list',
-    component: Bookings,
+    component: loadView('Bookings', 'bookings'),
     children : [
       {
         path     : 'list',
         name     : 'bookings list',
-        component: BookingsList,
+        component: loadView('BookingsList', 'bookings'),
       },
       {
         path     : 'create',
         name     : 'Create a booking',
-        component: CreateBooking,
+        component: loadView('CreateBooking', 'bookings'),
       },
       {
         path     : 'edit/:id',
         name     : 'Edit Booking',
-        component: EditBooking,
+        component: loadView('EditBooking', 'bookings'),
         props    : true,
       },
     ],
