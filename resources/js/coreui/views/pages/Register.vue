@@ -104,28 +104,33 @@ export default {
       })
     },
     register () {
-      this.$store.dispatch('register', {
-        name    : this.name,
-        email   : this.email,
-        password: this.password,
+      this.$store.dispatch('asyncCall', {
+        method: 'post',
+        url   : '/register',
+        data  : {
+          name    : this.name,
+          email   : this.email,
+          password: this.password,
+        },
+        canCommit: false,
       })
-        .then(response => {
+        .then(() => {
           this.$store.dispatch('retrieveToken', {
             username: this.email,
             password: this.password,
           })
-            .then(response => {
+            .then(() => {
               this.loading = false
               this.$router.push({ name: 'Home' })
             })
-            .catch(error => {
+            .catch((error) => {
               this.loading        = false
               this.serverError    = error.response.data
               this.password       = ''
               this.successMessage = ''
             })
         })
-        .catch(error => {
+        .catch((error) => {
           this.serverErrors = Object.values(error.response.data.errors)
         })
     },

@@ -16,6 +16,7 @@ import VeeValidate from 'vee-validate'
 import CxltToastr from 'cxlt-vue2-toastr'
 import * as VueGoogleMaps from 'vue2-google-maps'
 import NProgress from 'nprogress/nprogress'
+import LoadingOverlay from 'vue-loading-overlay';
 
 const toastrConfigs = {
   position    : 'bottom right',
@@ -23,7 +24,7 @@ const toastrConfigs = {
   timeOut     : 5000,
   progressBar : true,
 }
-
+Vue.use(LoadingOverlay)
 Vue.use(BootstrapVue)
 Vue.use(Notifications)
 Vue.use(Sweetalert)

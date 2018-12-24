@@ -12,7 +12,7 @@ import Page404 from '@/views/pages/Page404'
 import Page500 from '@/views/pages/Page500'
 import Login from '@/views/pages/Login'
 import Register from '@/views/pages/Register'
-import Logout from '@/components/logout.vue'
+import Logout from '@/components/Logout.vue'
 import ResetPassword from '@/views/pages/ForgotPassword.vue'
 
 // Sample route

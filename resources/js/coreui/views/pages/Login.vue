@@ -42,7 +42,7 @@
                   <b-row>
                     <b-col cols="6">
                       <b-loading
-                        v-if="loading"
+                        v-if="this.$store.state.loading"
                         :size=20
                         variant="Jumper"/>
                       <b-button
@@ -99,21 +99,23 @@ export default {
       password      : '',
       serverError   : '',
       successMessage: this.dataSuccessMessage,
-      loading       : false,
     }
   },
   methods: {
     login () {
-      this.loading = true
-      this.$store.dispatch('retrieveToken', {
-        username: this.username,
-        password: this.password,
-      }).then(response => {
-        this.loading = false
+      this.$store.dispatch('asyncCall', {
+        method: 'post',
+        url   : '/login',
+        data  : {
+          username: this.username,
+          password: this.password,
+        },
+        type: 'retrieveToken',
+      }).then((response) => {
+        localStorage.setItem('access_token', response.data.access_token)
         this.$router.push({ name: 'Home' })
       })
-        .catch(err => {
-          this.loading        = false
+        .catch((err) => {
           this.serverError    = err.response.data
           this.password       = ''
           this.successMessage = ''

@@ -24,7 +24,7 @@ export default {
     token () {
       return this.$store.state.token
     },
-    ...mapState({ defaultCompanyId: state => state.config.defaultCompanyId }),
+    ...mapState({ defaultCompanyId: (state) => state.config.defaultCompanyId }),
   },
   methods: { ...mapActions({ setDefaultCompany: 'setDefaultCompany' }) },
 }

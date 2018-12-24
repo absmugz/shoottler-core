@@ -8,11 +8,15 @@
         :style="{ 'margin-top': offset }" />
       <main class="main">
         <breadcrumb :list="list"/>
+        <vue-loading
+          :active.sync="this.$store.state.loading"
+          :can-cancel="false"
+          :is-full-page="true"
+          loader="dots"/>
         <div class="container-fluid">
           <router-view/>
         </div>
       </main>
-
     </div>
     <AppFooter/>
   </div>
@@ -21,10 +25,14 @@
 <script>
 import nav from '../_nav'
 import { Header as AppHeader, Sidebar, Aside as AppAside, Footer as AppFooter, Breadcrumb } from '../components'
+import VueLoading from 'vue-loading-overlay/src/js/Component'
+import LoadingSpinner from '../components/Loading'
 
 export default {
   name      : 'Full',
   components: {
+    LoadingSpinner,
+    VueLoading,
     AppHeader,
     Sidebar,
     AppAside,
