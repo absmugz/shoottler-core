@@ -95,43 +95,41 @@ export default {
       })
     },
     createCustomer () {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.post('/customers/create', {
+      this.$store.dispatch('asyncCall', {
+        method: 'post',
+        url   : '/customers/create',
+        data  : {
           company_id: this.activeCompanyId,
           name      : this.name,
           email     : this.email,
           type      : this.type,
-        })
-          .then((response) => {
-            this.$router.push({ name: 'customers list' })
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+        },
+        canCommit: false,
+      }).then(() => {
+        this.$router.push({ name: 'customers list' })
       })
+        .catch((err) => {
+          this.serverErrors = Object.values(err.response.data.errors)
+        })
     },
     getCustomerTypes () {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.get('/customer-types/', { params: { type: 'customer' } })
-          .then((response) => {
-            this.customerTypes = response.data.data.map((customerType) => {
-              const rCustomerType = {}
-              rCustomerType.value = customerType.id
-              rCustomerType.text  = customerType.name
-              return rCustomerType
-            })
-            this.loaded        = true
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+      this.$store.dispatch('asyncCall', {
+        method   : 'get',
+        url      : '/customer-types/',
+        params   : { type: 'customer' },
+        canCommit: false,
       })
+        .then((response) => {
+          this.customerTypes = response.data.data.map((customerType) => {
+            const rCustomerType = {}
+            rCustomerType.value = customerType.id
+            rCustomerType.text  = customerType.name
+            return rCustomerType
+          })
+        })
+        .catch((err) => {
+          this.serverErrors = Object.values(err.response.data.errors)
+        })
     },
   },
 }

@@ -25,6 +25,78 @@ const mutations = {
 }
 
 const actions = {
+  index ({ dispatch, commit }) {
+    return new Promise((resolve, reject) => {
+      dispatch('asyncCall', {
+        method   : 'get',
+        url      : '/companies',
+        canCommit: false,
+      }, { root: true }).then((response) => {
+        commit('set', {
+          key  : 'companiesList',
+          value: response.data,
+        })
+        resolve(response)
+      }).catch((err) => {
+        reject(err)
+      })
+    })
+  },
+  show ({ dispatch }, id) {
+    return new Promise((resolve, reject) => {
+      dispatch('asyncCall', {
+        method   : 'get',
+        url      : `/companies/${id}`,
+        canCommit: false,
+      }, { root: true }).then((response) => {
+        resolve(response)
+      }).catch((err) => {
+        reject(err)
+      })
+    })
+  },
+  store ({ dispatch }, data) {
+    return new Promise((resolve, reject) => {
+      dispatch('asyncCall', {
+        method   : 'post',
+        url      : '/companies/create',
+        data     : data,
+        canCommit: false,
+      }, { root: true }).then((response) => {
+        resolve(response)
+      }).catch((err) => {
+        reject(err)
+      })
+    })
+  },
+  update ({ dispatch }, { id, company }) {
+    return new Promise((resolve, reject) => {
+      dispatch('asyncCall', {
+        method   : 'put',
+        url      : `/companies/${id}/update`,
+        data     : company,
+        canCommit: false,
+      }, { root: true }).then((response) => {
+        resolve(response)
+      }).catch((err) => {
+        reject(err)
+      })
+    })
+  },
+  destroy ({ dispatch }, id) {
+    return new Promise((resolve, reject) => {
+      dispatch('asyncCall', {
+        method   : 'delete',
+        url      : `/companies/${id}`,
+        canCommit: false,
+      }, { root: true }).then((response) => {
+        resolve(response)
+      }).catch((err) => {
+        reject(err)
+      })
+    })
+  },
+
   getDefaultCompany ({ dispatch, commit }) {
     dispatch('asyncCall', {
       method   : 'get',
@@ -51,26 +123,15 @@ const actions = {
   },
   setDefaultCompany ({ dispatch, commit }, id) {
     dispatch('asyncCall', {
-      method   : 'post',
-      url      : '/companies/set-default',
-      params   : { company_id: id },
-      canCommit: false,
+      method            : 'post',
+      url               : '/companies/set-default',
+      params            : { company_id: id },
+      canCommit         : false,
+      showLoadingOverlay: false,
     }, { root: true }).then(() => {
       commit('set', {
         key  : 'config.defaultCompanyId',
         value: id,
-      })
-    })
-  },
-  getCompaniesList ({ dispatch, commit }) {
-    dispatch('asyncCall', {
-      method   : 'get',
-      url      : 'companies',
-      canCommit: false,
-    }, { root: true }).then((response) => {
-      commit('set', {
-        key  : 'companiesList',
-        value: response.data,
       })
     })
   },

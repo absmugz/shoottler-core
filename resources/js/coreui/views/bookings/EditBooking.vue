@@ -96,7 +96,8 @@
 </template>
 <script>
 import { createNamespacedHelpers } from 'vuex'
-const { mapState } = createNamespacedHelpers('company')
+const { mapState }   = createNamespacedHelpers('company')
+const { mapActions } = createNamespacedHelpers('booking')
 export default {
   name : 'EditBooking',
   props: { id: '' },
@@ -140,64 +141,32 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      show   : 'show',
+      update : 'update',
+      destroy: 'destroy',
+    }),
     getBooking (id) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.get(`/bookings/${id}`)
-          .then((response) => {
-            this.booking =  response.data.data
-            this.loaded  = true
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+      this.show(id).then((response) => {
+        this.booking =  response.data.data
+      }).catch((err) => {
+        this.serverErrors = Object.values(err.response.data.errors)
       })
     },
     validateBeforeSubmit (id) {
       this.$validator.validateAll().then((result) => {
         if (result)
-          this.updateBooking(id)
+          this.updateBooking(id, this.booking)
       })
     },
-    updateBooking (id) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.post(`/bookings/${id}/update`, {
-          _method    : 'PUT',
-          order_id   : this.booking.order_id,
-          customer_id: this.booking.customer_id,
-          bookable_id: this.booking.bookable_id,
-          starts_at  : this.booking.starts_at,
-          ends_at    : this.booking.ends_at,
-        })
-          .then((response) => {
-            this.successMessage = response.data.message
-            this.$router.push({ name: 'bookings list' })
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+    updateBooking (id, booking) {
+      this.update({ id, booking }).then(() => {
+        this.$router.push({ name: 'bookings list' })
       })
     },
     deleteBooking (id) {
-      this.deleteWarning                             = false
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.delete(`/bookings/${id}`, { _method: 'DELETE' })
-          .then((response) => {
-            this.successMessage = response.data.message
-            this.$router.push({ name: 'bookings list' })
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
-      })
+      this.deleteWarning = false
+      this.destroy(id).then(() => this.$router.push({ name: 'bookings list' }))
     },
     getCustomers () {
       axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`

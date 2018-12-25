@@ -1,8 +1,9 @@
 // actions are functions that cause side effects and can involve
 // asynchronous operations.
 export default {
-  asyncCall (context, { method = '', url = '', params = {}, data = {}, config = {}, type = '', sendToken = true, canCommit = true }) {
-    context.commit('setLoadingStatus', true)
+  asyncCall (context, { method = '', url = '', params = {}, data = {}, config = {}, type = '', sendToken = true, canCommit = true, showLoadingOverlay = true }) {
+    if (showLoadingOverlay)
+      context.commit('setLoadingStatus', true)
     if (sendToken)
       axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.token}`
     return new Promise((resolve, reject) => {

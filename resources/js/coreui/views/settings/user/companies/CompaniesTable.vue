@@ -31,6 +31,8 @@
 
 <script>
 import TableActions from './Actions'
+import { createNamespacedHelpers } from 'vuex'
+const { mapActions } = createNamespacedHelpers('company')
 export default {
   name      : 'CompaniesTable',
   components: { TableActions },
@@ -69,23 +71,14 @@ export default {
       totalRows  : 0,
     }
   },
-  computed: {
-    token () {
-      return this.$store.state.token
-    },
-  },
   mounted () {
-    this.getCompanies()
+    this.fetchRows()
   },
   methods: {
-    getCompanies () {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.get('/companies')
-          .then((response) => {
-            this.items.push(...response.data.data)
-          })
-          .catch(reject)
+    ...mapActions({ index: 'index' }),
+    fetchRows () {
+      this.index().then((response) => {
+        this.items.push(...response.data.data)
       })
     },
     getRowCount (items) {

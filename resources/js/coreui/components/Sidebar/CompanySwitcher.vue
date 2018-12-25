@@ -112,7 +112,7 @@ export default {
     ...mapActions({
       getDefaultCompany  : 'getDefaultCompany',
       setActiveCompany   : 'setActiveCompany',
-      getCompaniesList   : 'getCompaniesList',
+      getCompaniesList   : 'index',
       switchActiveCompany: 'switchActiveCompany',
     }),
     onClose () {

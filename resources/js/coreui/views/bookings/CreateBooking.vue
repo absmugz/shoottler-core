@@ -13,7 +13,7 @@
           {{ value[0] }}
         </div>
       </div>
-      <b-form @submit.prevent="validateBeforeSubmit()">
+      <b-form @submit.prevent="validateBeforeSubmit(booking)">
         <b-form-group>
           <label for="order">Order</label>
           <b-form-input
@@ -21,7 +21,7 @@
             id="order"
             name="order"
             placeholder="Order"
-            v-model="order"
+            v-model="booking.order"
           />
         </b-form-group>
         <b-form-group>
@@ -31,7 +31,7 @@
             id="customer"
             placeholder="Please select a customer"
             :options="customers"
-            v-model="customer"
+            v-model="booking.customer_id"
             name="customer"
             v-validate="'required'"/>
         </b-form-group>
@@ -42,11 +42,11 @@
             id="Service"
             placeholder="Please select a Service"
             :options="services"
-            v-model="service"
+            v-model="booking.bookable_id"
             name="service"
             v-validate="'required'"/>
         </b-form-group>
-        <span class="form-error">{{ errors.first('starts at') }}</span>
+        <span class="form-error">{{ errors.first('starts_at') }}</span>
         <b-form-group>
           <label for="starts_at">Starts At</label>
           <datetime
@@ -56,10 +56,11 @@
             id="starts_at"
             name="starts_at"
             placeholder="Starts At"
-            v-model="starts_at"
+            v-model="booking.starts_at"
             v-validate="'required'"
           />
         </b-form-group>
+        <span class="form-error">{{ errors.first('ends_at') }}</span>
         <b-form-group>
           <label for="ends_at">Ends At</label>
           <datetime
@@ -69,7 +70,7 @@
             id="ends_at"
             name="ends_at"
             placeholder="Ends At"
-            v-model="ends_at"
+            v-model="booking.ends_at"
             v-validate="'required'"
           />
         </b-form-group>
@@ -83,30 +84,28 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-const { mapState } = createNamespacedHelpers('company')
+const { mapState }   = createNamespacedHelpers('company')
+const { mapActions } = createNamespacedHelpers('booking')
 export default {
   name: 'CreateBooking',
   data () {
     return {
-      timezone      : process.env.MIX_APP_TIME_ZONE,
-      customers     : [],
-      services      : [],
-      order         : '',
-      customer      : '',
-      service       : '',
-      starts_at     : '',
-      ends_at       : '',
+      timezone : process.env.MIX_APP_TIME_ZONE,
+      customers: [],
+      services : [],
+      booking  : {
+        order      : '',
+        customer_id: '',
+        service_id : '',
+        starts_at  : '',
+        ends_at    : '',
+      },
       serverErrors  : '',
       successMessage: '',
     }
   },
-  computed: {
-    token () {
-      return this.$store.state.token
-    },
-    ...mapState({ activeCompanyId: (state) => state.activeCompany.id }),
-  },
-  watch: {
+  computed: { ...mapState({ activeCompanyId: (state) => state.activeCompany.id }) },
+  watch   : {
     activeCompanyId () {
       this.customers = []
       this.getCustomers()
@@ -133,70 +132,56 @@ export default {
     }
   },
   methods: {
-    validateBeforeSubmit () {
+    ...mapActions({ store: 'store' }),
+    validateBeforeSubmit (booking) {
       this.$validator.validateAll().then((result) => {
         if (result)
-          this.createBooking()
+          this.createBooking(booking)
       })
     },
-    createBooking () {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.post('/bookings/create', {
-          customer_id: this.customer,
-          bookable_id: this.service,
-          order_id   : this.order,
-          starts_at  : this.starts_at,
-          ends_at    : this.ends_at,
-        })
-          .then((response) => {
-            this.$router.push({ name: 'bookings list' })
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+    createBooking (booking) {
+      this.store(booking).then(() => {
+        this.$router.push({ name: 'bookings list' })
       })
     },
     getCustomers () {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.get('/customers/', { params: { search: this.customer, company_id: this.activeCompanyId } })
-          .then((response) => {
-            this.customers = response.data.data.map((customer) => {
-              const rCustomer = {}
-              rCustomer.value = customer.id
-              rCustomer.text  = customer.name
-              return rCustomer
-            })
-            this.loaded    = true
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+      this.$store.dispatch('asyncCall', {
+        method: 'get',
+        url   : '/customers/',
+        params: {
+          search    : this.customer,
+          company_id: this.activeCompanyId,
+        },
+        canCommit: false,
+      }).then((response) => {
+        this.customers = response.data.data.map((customer) => {
+          const rCustomer = {}
+          rCustomer.value = customer.id
+          rCustomer.text  = customer.name
+          return rCustomer
+        })
+      }).catch((err) => {
+        this.serverErrors = Object.values(err.response.data.errors)
       })
     },
     getServices () {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.get('/services/', { params: { search: this.service, company_id: this.activeCompanyId } })
-          .then((response) => {
-            this.services = response.data.data.map((service) => {
-              const rService = {}
-              rService.value = service.id
-              rService.text  = service.name
-              return rService
-            })
-            this.loaded   = true
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+      this.$store.dispatch('asyncCall', {
+        method: 'get',
+        url   : '/services/',
+        params: {
+          search    : this.service,
+          company_id: this.activeCompanyId,
+        },
+        canCommit: false,
+      }).then((response) => {
+        this.services = response.data.data.map((service) => {
+          const rService = {}
+          rService.value = service.id
+          rService.text  = service.name
+          return rService
+        })
+      }).catch((err) => {
+        this.serverErrors = Object.values(err.response.data.errors)
       })
     },
   },
