@@ -6,4 +6,7 @@ export default {
   emailVerified (state) {
     return state.emailVerified !== null
   },
+  loading (state) {
+    return state.loading !== false
+  },
 }

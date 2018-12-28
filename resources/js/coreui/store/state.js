@@ -3,4 +3,5 @@
 export default {
   version: __VERSION,
   token  : localStorage.getItem('access_token') || null,
+  loading: false,
 }

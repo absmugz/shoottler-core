@@ -1,6 +1,5 @@
 <template>
   <b-card
-    v-if="loaded"
     :header="caption">
     <b-table
       :hover="hover"
@@ -33,6 +32,8 @@
 
 <script>
 import TableActions from './Actions'
+import { createNamespacedHelpers } from 'vuex'
+const { mapActions } = createNamespacedHelpers('booking')
 export default {
   name      : 'BookingsTable',
   components: { TableActions },
@@ -77,39 +78,23 @@ export default {
       currentPage : 1,
       perPage     : 5,
       totalRows   : 0,
-      loaded      : false,
       serverErrors: [],
     }
   },
-  computed: {
-    token () {
-      return this.$store.state.token
-    },
-  },
   mounted () {
     if (this.company)
-      this.getBookings()
+      this.fetchRows()
   },
   watch: {
     company () {
-      this.items = []
-      this.getBookings()
+      this.fetchRows()
     },
   },
   methods: {
-    getBookings () {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.get('/bookings/', { params: { company_id: this.company } })
-          .then((response) => {
-            this.items.push(...response.data.data)
-            this.loaded = true
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+    ...mapActions({ index: 'index' }),
+    fetchRows () {
+      this.index().then((response) => {
+        this.items.push(...response.data.data)
       })
     },
     getRowCount (items) {

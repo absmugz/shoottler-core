@@ -13,7 +13,7 @@
           {{ value[0] }}
         </div>
       </div>
-      <b-form @submit.prevent="validateBeforeSubmit()">
+      <b-form @submit.prevent="validateBeforeSubmit(user)">
         <span class="form-error">{{ errors.first('name') }}</span>
         <b-form-group>
           <label for="name">Name </label>
@@ -74,6 +74,8 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from 'vuex'
+const { mapActions } = createNamespacedHelpers('user')
 export default {
   name: 'UserProfile',
   data () {
@@ -87,51 +89,25 @@ export default {
       serverErrors: '',
     }
   },
-  computed: {
-    token () {
-      return this.$store.state.token
-    },
-  },
   mounted () {
     this.getUser()
   },
   methods: {
-    validateBeforeSubmit () {
+    ...mapActions({ show: 'show', update: 'update' }),
+    validateBeforeSubmit (user) {
       this.$validator.validateAll().then((result) => {
         if (result)
-          this.updateUser()
+          this.updateUser(user)
       })
     },
     getUser () {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.get('/user')
-          .then((response) => {
-            this.user = response.data.data
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+      this.show().then((response) => {
+        this.user = response.data.data
       })
     },
-    updateUser () {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.post('/user/update', {
-          name    : this.user.name,
-          email   : this.user.email,
-          password: this.user.password,
-        })
-          .then((response) => {
-            this.user = response.data.data
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+    updateUser (user) {
+      this.update(user).then((response) => {
+        this.user = response.data.data
       })
     },
   },

@@ -1,6 +1,5 @@
 <template>
   <b-card
-    v-if="loaded"
     :header="caption">
     <b-table
       :hover="hover"
@@ -65,8 +64,8 @@ export default {
   },
   data: () => {
     return {
-      items: [],
-      fields   : [
+      items : [],
+      fields: [
         { key: 'name', label: 'Name' },
         { key: 'type', label: 'Type' },
         { key: 'actions', label: 'Actions' },
@@ -74,7 +73,6 @@ export default {
       currentPage : 1,
       perPage     : 5,
       totalRows   : 0,
-      loaded      : false,
       serverErrors: [],
     }
   },
@@ -95,18 +93,15 @@ export default {
   },
   methods: {
     getCustomers () {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.get('/customers/', { params: { company_id: this.company } })
-          .then((response) => {
-            this.items.push(...response.data.data)
-            this.loaded = true
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+      this.$store.dispatch('asyncCall', {
+        method   : 'get',
+        url      : '/customers/',
+        params   : { company_id: this.company },
+        canCommit: false,
+      }).then((response) => {
+        this.items.push(...response.data.data)
+      }).catch((err) => {
+        this.serverErrors = Object.values(err.response.data.errors)
       })
     },
     getRowCount (items) {

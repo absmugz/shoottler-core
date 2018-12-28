@@ -24,8 +24,8 @@
     <div id="app">
         <!-- Inject -->
     </div>
-    <script src="{{ asset(mix('js/manifest.js')) }}"></script>
-    <script src="{{ asset(mix('js/vendor.js')) }}"></script>
+{{--    <script src="{{ asset(mix('js/manifest.js')) }}"></script>
+    <script src="{{ asset(mix('js/vendor.js')) }}"></script>--}}
     <script src="{{ asset(mix('js/app.js')) }}"></script>
     <script>$('div.alert').not('.alert-important').delay(3000).fadeOut(350);</script>
 </body>

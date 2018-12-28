@@ -13,7 +13,7 @@
           {{ value[0] }}
         </div>
       </div>
-      <b-form @submit.prevent="validateBeforeSubmit()">
+      <b-form @submit.prevent="validateBeforeSubmit(area)">
         <b-form-group
           label="Type"
           label-for="type"
@@ -22,13 +22,13 @@
           <b-form-radio-group
             id="type"
             name="type"
-            v-model="type">
+            v-model="area.type">
             <div class="custom-control custom-radio custom-control-inline">
               <input
                 type="radio"
                 id="airport"
                 name="type"
-                v-model="type"
+                v-model="area.type"
                 class="custom-control-input"
                 value="airport"
                 checked>
@@ -41,7 +41,7 @@
                 type="radio"
                 id="trainStation"
                 name="type"
-                v-model="type"
+                v-model="area.type"
                 class="custom-control-input"
                 value="trainStation">
               <label
@@ -53,7 +53,7 @@
                 type="radio"
                 id="port"
                 name="type"
-                v-model="type"
+                v-model="area.type"
                 class="custom-control-input"
                 value="port">
               <label
@@ -70,7 +70,7 @@
             id="name"
             name="name"
             placeholder="Service Area name"
-            v-model="name"
+            v-model="area.name"
             v-validate="'required|max:255'"/>
         </b-form-group>
         <span class="form-error">{{ errors.first('country') }}</span>
@@ -81,7 +81,7 @@
             id="country"
             name="country"
             placeholder="Country"
-            v-model="country"
+            v-model="area.country"
             v-validate="'required|max:255'"/>
         </b-form-group>
         <span class="form-error">{{ errors.first('city') }}</span>
@@ -92,7 +92,7 @@
             id="city"
             name="city"
             placeholder="City"
-            v-model="city"
+            v-model="area.city"
             v-validate="'required'"/>
         </b-form-group>
         <b-form-group>
@@ -102,7 +102,7 @@
             id="IATA"
             name="IATA"
             placeholder="IATA Code"
-            v-model="IATA"/>
+            v-model="area.IATA"/>
         </b-form-group>
         <b-form-group>
           <label for="ICAO">ICAO</label>
@@ -111,7 +111,7 @@
             id="ICAO"
             name="ICAO"
             placeholder="ICAO"
-            v-model="ICAO"/>
+            v-model="area.ICAO"/>
         </b-form-group>
         <b-form-group>
           <label for="FAA">FAA</label>
@@ -120,7 +120,7 @@
             id="FAA"
             name="FAA"
             placeholder="FAA"
-            v-model="FAA"/>
+            v-model="area.FAA"/>
         </b-form-group>
         <b-button
           type="submit"
@@ -130,59 +130,41 @@
   </div>
 
 </template>
-
 <script>
 import { createNamespacedHelpers } from 'vuex'
-const { mapState } = createNamespacedHelpers('company')
+const { mapActions } = createNamespacedHelpers('area')
+const { mapState }   = createNamespacedHelpers('company')
 export default {
   name: 'CreateServiceArea',
   data () {
     return {
-      type          : '',
-      name          : '',
-      country       : '',
-      city          : '',
-      IATA          : '',
-      ICAO          : '',
-      FAA           : '',
+      area: {
+        company_id: '',
+        type      : '',
+        name      : '',
+        country   : '',
+        city      : '',
+        IATA      : '',
+        ICAO      : '',
+        FAA       : '',
+      },
       serverErrors  : '',
       successMessage: '',
     }
   },
-  computed: {
-    token () {
-      return this.$store.state.token
-    },
-    ...mapState({ activeCompanyId: (state) => state.activeCompany.id }),
-  },
-  methods: {
-    validateBeforeSubmit () {
+  computed: { ...mapState({ activeCompanyId: (state) => state.activeCompany.id }) },
+  methods : {
+    ...mapActions({ store: 'store' }),
+    validateBeforeSubmit (area) {
       this.$validator.validateAll().then((result) => {
         if (result)
-          this.createArea()
+          this.createArea(area)
       })
     },
-    createArea () {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.post('/areas/create', {
-          company_id: this.activeCompanyId,
-          type      : this.type,
-          name      : this.name,
-          country   : this.country,
-          city      : this.city,
-          IATA      : this.IATA,
-          ICAO      : this.ICAO,
-          FAA       : this.FAA,
-        })
-          .then((response) => {
-            this.$router.push({ name: 'service areas list' })
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+    createArea (area) {
+      area.company_id = this.activeCompanyId
+      this.store(area).then(() => {
+        this.$router.push({ name: 'service areas list' })
       })
     },
   },

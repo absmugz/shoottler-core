@@ -1,6 +1,5 @@
 <template>
   <b-card
-    v-if="loaded"
     :header="caption">
     <b-table
       :hover="hover"
@@ -33,6 +32,9 @@
 
 <script>
 import TableActions from './Actions'
+import { createNamespacedHelpers } from 'vuex'
+const { mapActions } = createNamespacedHelpers('area')
+
 export default {
   name      : 'ServiceAreasTable',
   components: { TableActions },
@@ -81,30 +83,22 @@ export default {
   },
   mounted () {
     if (this.company)
-      this.getAreas()
+      this.fetchRows()
   },
   watch: {
     company () {
       this.items = []
-      this.getAreas()
+      this.fetchRows()
     },
   },
   methods: {
-    getAreas () {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.get('/areas/', { params: { company_id: this.company } })
-          .then((response) => {
-            this.items.push(...response.data.data)
-            this.loaded = true
-            resolve(response)
-          })
-          .catch(err => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+    ...mapActions({ index: 'index' }),
+    fetchRows () {
+      this.index().then((response) => {
+        this.items.push(...response.data.data)
       })
     },
+
     getRowCount (items) {
       return items.length
     },

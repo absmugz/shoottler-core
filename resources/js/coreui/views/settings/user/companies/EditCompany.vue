@@ -1,5 +1,5 @@
 <template>
-  <b-card v-if="companiesList.data">
+  <b-card>
     <div slot="header">
       <strong>Edit company</strong> <small>{{ company.name }}</small>
     </div>
@@ -12,7 +12,7 @@
         {{ value[0] }}
       </div>
     </div>
-    <b-form @submit.prevent="validateBeforeSubmit(id)">
+    <b-form @submit.prevent="validateBeforeSubmit(id, company)">
       <b-form-group>
         <label for="name">Company</label>
         <b-form-input
@@ -111,89 +111,48 @@ export default {
       deleteWarning : false,
     }
   },
-  computed: {
-    ...mapState({ companiesList: state => state.companiesList }),
-    token () {
-      return this.$store.state.token
-    },
-  },
   mounted () {
     this.getCompany(this.id)
   },
-  methods: {
+  computed: { ...mapState({ activeCompanyId: (state) => state.activeCompany.id }) },
+  methods : {
     ...mapActions({
-      getCompaniesList : 'getCompaniesList',
-      setActiveCompany : 'setActiveCompany',
-      getDefaultCompany: 'getDefaultCompany',
+      index              : 'index',
+      show               : 'show',
+      update             : 'update',
+      destroy            : 'destroy',
+      setActiveCompany   : 'setActiveCompany',
+      getDefaultCompany  : 'getDefaultCompany',
+      switchActiveCompany: 'switchActiveCompany',
     }),
     getCompany (id) {
-      if (!this.companiesList.data) {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-        return new Promise((resolve, reject) => {
-          axios.get(`/companies/${id}`)
-            .then((response) => {
-              this.company =  response.data.data[0]
-              resolve(response)
-            })
-            .catch(err => {
-              this.serverErrors = Object.values(err.response.data.errors)
-              reject(err)
-            })
-        })
-      }
-      this.company =  this.companiesList.data.find(function (company) {
-        return company.id === id
+      this.show(id).then((response) => {
+        this.company = response.data.data[0]
       })
     },
-    validateBeforeSubmit (id) {
+    validateBeforeSubmit (id, company) {
       this.$validator.validateAll().then((result) => {
         if (result)
-          this.updateCompany(id)
+          this.updateCompany(id, company)
       })
     },
-    updateCompany (id) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.post(`/companies/${id}/update`, {
-          _method    : 'PUT',
-          name       : this.company.name,
-          brand      : this.company.brand,
-          website    : this.company.website,
-          facebook   : this.company.facebook,
-          google_plus: this.company.google_plus,
-          tripadvisor: this.company.tripadvisor,
-        })
-          .then((response) => {
-            this.successMessage = response.data.message
-            this.getDefaultCompany()
-            this.getCompaniesList()
-            this.setActiveCompany()
-            this.$router.push({ name: 'My Companies' })
-            resolve(response)
-          })
-          .catch(err => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+    updateCompany (id, company) {
+      this.update({ id, company }).then(() => {
+        this.index()
+        if (this.activeCompanyId === id)
+          this.switchActiveCompany(company)
+        this.$router.push({ name: 'My Companies' })
       })
     },
     deleteCompany (id) {
-      this.deleteWarning                             = false
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.delete(`/companies/${id}`, { _method: 'DELETE' })
-          .then((response) => {
-            this.successMessage = response.data.message
-            this.setActiveCompany()
-            this.getCompaniesList()
-            this.getDefaultCompany()
-            this.$router.push({ name: 'My Companies' })
-            resolve(response)
-          })
-          .catch(err => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+      this.deleteWarning  = false
+      this.destroy(id).then(() => {
+        this.index()
+        if (this.activeCompanyId === id) {
+          this.getDefaultCompany()
+          this.setActiveCompany()
+        }
+        this.$router.push({ name: 'My Companies' })
       })
     },
   },

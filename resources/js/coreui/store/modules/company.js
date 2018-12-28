@@ -1,12 +1,12 @@
 const state = {
-  config       : { defaultCompanyId: {} },
+  config       : { defaultCompanyId: '' },
   companiesList: [],
   activeCompany: {},
 }
 
 function initialState () {
   return {
-    config       : { defaultCompanyId: {} },
+    config       : { defaultCompanyId: '' },
     companiesList: [],
     activeCompany: {},
   }
@@ -18,80 +18,121 @@ const mutations = {
   },
   reset (state) {
     const s = initialState()
-    Object.keys(s).forEach(key => {
+    Object.keys(s).forEach((key) => {
       state[key] = s[key]
     })
   },
 }
 
 const actions = {
-  getConfig ({ commit }) {
+  index ({ dispatch, commit }) {
     return new Promise((resolve, reject) => {
-      axios.get('config')
-        .then((response) => {
-          commit('set', {
-            key  : 'config',
-            value: response.data,
-          })
-          resolve()
+      dispatch('asyncCall', {
+        method   : 'get',
+        url      : '/companies',
+        canCommit: false,
+      }, { root: true }).then((response) => {
+        commit('set', {
+          key  : 'companiesList',
+          value: response.data,
         })
-        .catch(reject)
+        resolve(response)
+      }).catch((err) => {
+        reject(err)
+      })
     })
   },
-  getDefaultCompany ({ commit, rootState }) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${rootState.token}`
+  show ({ dispatch }, id) {
     return new Promise((resolve, reject) => {
-      axios.get('/companies/default')
-        .then((response) => {
-          commit('set', {
-            key  : 'config.defaultCompanyId',
-            value: response.data.data.id,
-          })
-          resolve()
-        })
-        .catch(reject)
+      dispatch('asyncCall', {
+        method   : 'get',
+        url      : `/companies/${id}`,
+        canCommit: false,
+      }, { root: true }).then((response) => {
+        resolve(response)
+      }).catch((err) => {
+        reject(err)
+      })
     })
   },
-  setActiveCompany ({ commit, rootState }) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${rootState.token}`
+  store ({ dispatch }, data) {
     return new Promise((resolve, reject) => {
-      axios.get('/companies/default')
-        .then((response) => {
-          commit('set', {
-            key  : 'activeCompany',
-            value: response.data.data,
-          })
-          resolve()
-        })
-        .catch(reject)
+      dispatch('asyncCall', {
+        method   : 'post',
+        url      : '/companies/create',
+        data     : data,
+        canCommit: false,
+      }, { root: true }).then((response) => {
+        resolve(response)
+      }).catch((err) => {
+        reject(err)
+      })
     })
   },
-  setDefaultCompany ({ commit, rootState }, id) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${rootState.token}`
+  update ({ dispatch }, { id, company }) {
     return new Promise((resolve, reject) => {
-      axios.post('/companies/set-default', { company_id: id })
-        .then((response) => {
-          commit('set', {
-            key  : 'config.defaultCompanyId',
-            value: response.data.data.company_id,
-          })
-          resolve()
-        })
-        .catch(reject)
+      dispatch('asyncCall', {
+        method   : 'put',
+        url      : `/companies/${id}/update`,
+        data     : company,
+        canCommit: false,
+      }, { root: true }).then((response) => {
+        resolve(response)
+      }).catch((err) => {
+        reject(err)
+      })
     })
   },
-  getCompaniesList ({ commit, rootState }) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${rootState.token}`
+  destroy ({ dispatch }, id) {
     return new Promise((resolve, reject) => {
-      axios.get('/companies')
-        .then((response) => {
-          commit('set', {
-            key  : 'companiesList',
-            value: response.data,
-          })
-          resolve()
-        })
-        .catch(reject)
+      dispatch('asyncCall', {
+        method   : 'delete',
+        url      : `/companies/${id}`,
+        canCommit: false,
+      }, { root: true }).then((response) => {
+        resolve(response)
+      }).catch((err) => {
+        reject(err)
+      })
+    })
+  },
+
+  getDefaultCompany ({ dispatch, commit }) {
+    dispatch('asyncCall', {
+      method   : 'get',
+      url      : '/companies/default',
+      canCommit: false,
+    }, { root: true }).then((response) => {
+      commit('set', {
+        key  : 'config.defaultCompanyId',
+        value: response.data.data.id,
+      })
+    })
+  },
+  setActiveCompany ({ dispatch, commit }) {
+    dispatch('asyncCall', {
+      method   : 'get',
+      url      : '/companies/default',
+      canCommit: false,
+    }, { root: true }).then((response) => {
+      commit('set', {
+        key  : 'activeCompany',
+        value: response.data.data,
+      })
+    })
+  },
+  setDefaultCompany ({ dispatch, commit }, id) {
+    dispatch('asyncCall', {
+      method            : 'post',
+      url               : '/companies/set-default',
+      params            : { company_id: id },
+      canCommit         : false,
+      showLoadingOverlay: false,
+    }, { root: true }).then(() => {
+      commit('set', {
+        key  : 'config.defaultCompanyId',
+        value: id,
+      })
     })
   },
   switchActiveCompany ({ commit }, company) {

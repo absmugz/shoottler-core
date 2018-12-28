@@ -1,5 +1,5 @@
 <template>
-  <b-card v-if="loaded">
+  <b-card>
     <div slot="header">
       <strong>Edit customer</strong> <small>{{ customer.name }} - {{ customer.type }}</small>
     </div>
@@ -66,7 +66,6 @@ export default {
         name : '',
         email: '',
       },
-      loaded        : false,
       serverErrors  : '',
       successMessage: '',
       deleteWarning : false,
@@ -85,19 +84,16 @@ export default {
   },
   methods: {
     getCustomers (id) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.get(`/customers/${id}`)
-          .then((response) => {
-            this.customer =  response.data.data
-            this.loaded   = true
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+      this.$store.dispatch('asyncCall', {
+        method   : 'get',
+        url      : `/customers/${id}`,
+        canCommit: false,
+      }).then((response) => {
+        this.customer =  response.data.data
       })
+        .catch((err) => {
+          this.serverErrors = Object.values(err.response.data.errors)
+        })
     },
     validateBeforeSubmit (id) {
       this.$validator.validateAll().then((result) => {
@@ -106,58 +102,50 @@ export default {
       })
     },
     updateCustomer (id) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.post(`/customers/${id}/update`, {
+      this.$store.dispatch('asyncCall', {
+        method: 'post',
+        url   : `/customers/${id}/update`,
+        data  : {
           _method: 'PUT',
           name   : this.customer.name,
           email  : this.customer.email,
-        })
-          .then((response) => {
-            this.successMessage = response.data.message
-            this.$router.push({ name: 'customers list' })
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+        },
+        canCommit: false,
+      }).then((response) => {
+        this.successMessage = response.data.message
+        this.$router.push({ name: 'customers list' })
+      }).catch((err) => {
+        this.serverErrors = Object.values(err.response.data.errors)
       })
     },
     deleteCustomer (id) {
-      this.deleteWarning                             = false
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.delete(`/customers/${id}`, { _method: 'DELETE' })
-          .then((response) => {
-            this.successMessage = response.data.message
-            this.$router.push({ name: 'customers list' })
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+      this.deleteWarning = false
+      this.$store.dispatch('asyncCall', {
+        method   : 'delete',
+        url      : `/customers/${id}`,
+        canCommit: false,
+      }).then((response) => {
+        this.successMessage = response.data.message
+        this.$router.push({ name: 'customers list' })
+      }).catch((err) => {
+        this.serverErrors = Object.values(err.response.data.errors)
       })
     },
     getCustomerTypes () {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.get('/customer-types/', { params: { type: 'customer' } })
-          .then((response) => {
-            this.customerTypes = response.data.data.map((customerType) => {
-              const rCustomerType = {}
-              rCustomerType.value = customerType.id
-              rCustomerType.text  = customerType.name
-              return rCustomerType
-            })
-            this.loaded        = true
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+      this.$store.dispatch('asyncCall', {
+        method   : 'get',
+        url      : '/customer-types/',
+        params   : { type: 'customer' },
+        canCommit: false,
+      }).then((response) => {
+        this.customerTypes = response.data.data.map((customerType) => {
+          const rCustomerType = {}
+          rCustomerType.value = customerType.id
+          rCustomerType.text  = customerType.name
+          return rCustomerType
+        })
+      }).catch((err) => {
+        this.serverErrors = Object.values(err.response.data.errors)
       })
     },
   },

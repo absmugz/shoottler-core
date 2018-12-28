@@ -12,7 +12,7 @@
         {{ value[0] }}
       </div>
     </div>
-    <b-form @submit.prevent="validateBeforeSubmit(id)">
+    <b-form @submit.prevent="validateBeforeSubmit(id, zone)">
       <b-form-group>
         <label for="name">Area</label>
         <b-select-2
@@ -75,7 +75,7 @@
   </b-card>
 </template>
 <script>
-import { createNamespacedHelpers } from 'vuex'
+import { createNamespacedHelpers, mapActions } from 'vuex'
 import { gmapApi } from 'vue2-google-maps'
 const { mapState } = createNamespacedHelpers('company')
 export default {
@@ -86,7 +86,7 @@ export default {
       options: { disableDefaultUI: true },
       items  : [],
       zone   : {
-        area_id      : '',
+        area_id   : '',
         name      : '',
         boundaries: '',
       },
@@ -99,9 +99,6 @@ export default {
     }
   },
   computed: {
-    token () {
-      return this.$store.state.token
-    },
     ...mapState({ activeCompanyId: (state) => state.activeCompany.id }),
     google: gmapApi,
   },
@@ -121,87 +118,50 @@ export default {
     },
   },
   methods: {
+    ...mapActions({
+      show     : 'zone/show',
+      update   : 'zone/update',
+      destroy  : 'zone/destroy',
+      areaIndex: 'area/index',
+    }),
     getZone (id) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.get(`/zones/${id}`)
-          .then((response) => {
-            this.zone   =  response.data.data
-            this.loaded = true
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+      this.show(id).then((response) => {
+        this.zone =  response.data.data
+      }).catch((err) => {
+        this.serverErrors = Object.values(err.response.data.errors)
       })
     },
     getAreas () {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.get('/areas/', { params: { company_id: this.activeCompanyId } })
-          .then((response) => {
-            this.items  = response.data.data.map((area) => {
-              const rArea = {}
-              rArea.value = area.id
-              rArea.text  = area.name
-              return rArea
-            })
-            this.loaded = true
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+      this.areaIndex().then((response) => {
+        this.items  = response.data.data.map((area) => {
+          const rArea = {}
+          rArea.value = area.id
+          rArea.text  = area.name
+          return rArea
+        })
       })
     },
-    validateBeforeSubmit (id) {
+    validateBeforeSubmit (id, zone) {
       this.$validator.validateAll().then((result) => {
-        if (result)
-          this.updateZone(id)
-      })
-    },
-    updateZone (id) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.post(`/zones/${id}/update`, {
-          _method   : 'PUT',
-          area      : this.zone.area_id,
-          name      : this.zone.name,
-          boundaries: this.all_overlays.map((polygon) => {
+        if (result) {
+          zone.boundaries = this.all_overlays.map((polygon) => {
             const rBoundaries      = {}
             if (polygon.overlay.map !== null)
               rBoundaries.wktPolygon = polygon.overlay.ToWKT()
             return rBoundaries
-          }),
-        })
-          .then((response) => {
-            this.successMessage = response.data.message
-            this.$router.push({ name: 'zones list' })
-            resolve(response)
           })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+          this.updateZone(id, zone)
+        }
+      })
+    },
+    updateZone (id, zone) {
+      this.update({ id, zone }).then(() => {
+        this.$router.push({ name: 'zones list' })
       })
     },
     deleteZone (id) {
       this.deleteWarning                             = false
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.delete(`/zones/${id}`, { _method: 'DELETE' })
-          .then((response) => {
-            this.successMessage = response.data.message
-            this.$router.push({ name: 'zones list' })
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
-      })
+      this.destroy(id).then(() => this.$router.push({ name: 'zones list' }))
     },
     initDrawingManager: function () {
       this.$refs.myMap.$mapPromise.then((map) => {
