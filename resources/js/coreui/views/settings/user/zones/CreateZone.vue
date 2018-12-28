@@ -15,14 +15,14 @@
       </div>
       <b-form
         id="myForm"
-        @submit.prevent="validateBeforeSubmit()">
+        @submit.prevent="validateBeforeSubmit(zone)">
         <b-form-group>
           <label for="area">Service Area</label>
           <b-select-2
             id="serviceArea"
             placeholder="Please select a service area"
             :options="items"
-            v-model="area"
+            v-model="zone.area_id"
             name="area"/>
         </b-form-group>
         <span class="form-error">{{ errors.first('area') }}</span>
@@ -33,7 +33,7 @@
             id="name"
             name="name"
             placeholder="Zone name"
-            v-model="name"
+            v-model="zone.name"
             v-validate="'required|max:255'"
           />
         </b-form-group>
@@ -72,16 +72,21 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
+import { mapActions } from 'vuex'
 import { gmapApi } from 'vue2-google-maps'
 const { mapState } = createNamespacedHelpers('company')
+
 export default {
   name: 'CreateZone',
   data () {
     return {
-      options       : { disableDefaultUI: true },
-      items         : [],
-      area          : '',
-      name          : '',
+      options: { disableDefaultUI: true },
+      items  : [],
+      zone   : {
+        area_id      : '',
+        name      : '',
+        boundaries: {},
+      },
       loaded        : '',
       serverErrors  : '',
       successMessage: '',
@@ -109,53 +114,36 @@ export default {
     },
   },
   methods: {
-    validateBeforeSubmit () {
+    ...mapActions({
+      store    : 'zone/store',
+      areaIndex: 'area/index',
+    }),
+    validateBeforeSubmit (zone) {
       this.$validator.validateAll().then((result) => {
-        if (result)
-          this.createZone()
-      })
-    },
-    getAreas () {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.get('/areas/', { params: { company_id: this.activeCompanyId } })
-          .then((response) => {
-            this.items  = response.data.data.map((area) => {
-              const rArea = {}
-              rArea.value = area.id
-              rArea.text  = area.name
-              return rArea
-            })
-            this.loaded = true
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
-      })
-    },
-    createZone () {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.post('/zones/create', {
-          area      : this.area,
-          name      : this.name,
-          boundaries: this.all_overlays.map((polygon) => {
+        if (result) {
+          zone.boundaries = this.all_overlays.map((polygon) => {
             const rBoundaries      = {}
             if (polygon.overlay.map !== null)
               rBoundaries.wktPolygon = polygon.overlay.ToWKT()
             return rBoundaries
-          }),
+          })
+          this.createZone(zone)
+        }
+      })
+    },
+    getAreas () {
+      this.areaIndex().then((response) => {
+        this.items  = response.data.data.map((area) => {
+          const rArea = {}
+          rArea.value = area.id
+          rArea.text  = area.name
+          return rArea
         })
-          .then((response) => {
-            this.$router.push({ name: 'zones list' })
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+      })
+    },
+    createZone (zone) {
+      this.store(zone).then(() => {
+        this.$router.push({ name: 'zones list' })
       })
     },
     geoLocate: function () {

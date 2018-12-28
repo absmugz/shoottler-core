@@ -37,7 +37,7 @@ class ZoneController extends Controller {
 	 */
 	public function store(Request $request){
 		$request->validate([
-			'area' => 'required',
+			'area_id' => 'required',
 			'name' => 'required|max:255',
 			'boundaries' => 'required'
 		]);
@@ -51,7 +51,7 @@ class ZoneController extends Controller {
 		}
 		$zone = new Zone($data);
 		$zone->parseGeometryToMultiPolygon('POLYGON('.$wkt.')');
-		$area = Area::findOrFail($request->get('area'));
+		$area = Area::findOrFail($request->get('area_id'));
 		$area->zones()->save($zone);
 		return response()->json([
 			'zone' => $zone,
@@ -68,14 +68,14 @@ class ZoneController extends Controller {
 	 */
 	public function update(Request $request, $id) {
 		$request->validate([
-			'area' => 'required',
+			'area_id' => 'required',
 			'name' => 'required|max:255',
 		]);
 		$data = $request->all();
 		$zone = Zone::findOrFail($id);
 		$zone->name = $request->get('name');
 		$zone->parseBoundaries($data['boundaries']);
-		$area = Area::findOrFail($request->get('area'));
+		$area = Area::findOrFail($request->get('area_id'));
 		$area->zones()->save($zone);
 		return response()->json([
 			'data' => $zone,

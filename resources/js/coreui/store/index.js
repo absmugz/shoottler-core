@@ -8,7 +8,11 @@ import axios from 'axios'
 import company from './modules/company'
 import booking from './modules/booking'
 import customer from './modules/customer'
-import service from './modules/service'
+import area from './modules/area'
+import resource from './modules/resource'
+import zone from './modules/zone'
+import item from './modules/item'
+import user from './modules/user'
 
 Vue.use(Vuex)
 axios.defaults.baseURL = 'https://openshoottler.test/api'
@@ -18,7 +22,11 @@ export default new Vuex.Store({
     company : company,
     booking : booking,
     customer: customer,
-    service : service,
+    area    : area,
+    item    : item,
+    resource: resource,
+    zone    : zone,
+    user    : user,
   },
   state,
   mutations,

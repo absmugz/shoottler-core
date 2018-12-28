@@ -1,5 +1,5 @@
 <template>
-  <b-card v-if="loaded">
+  <b-card >
     <div slot="header">
       <strong>Edit area</strong> <small>{{ area.name }}</small>
     </div>
@@ -12,7 +12,7 @@
         {{ value[0] }}
       </div>
     </div>
-    <b-form @submit.prevent="validateBeforeSubmit(id)">
+    <b-form @submit.prevent="validateBeforeSubmit(id, area)">
       <b-form-group>
         <label for="name">Area</label>
         <b-form-input
@@ -91,6 +91,8 @@
   </b-card>
 </template>
 <script>
+import { createNamespacedHelpers } from 'vuex'
+const { mapActions } = createNamespacedHelpers('area')
 export default {
   name : 'EditServiceArea',
   props: { id: '' },
@@ -111,75 +113,36 @@ export default {
       deleteWarning : false,
     }
   },
-  computed: {
-    token () {
-      return this.$store.state.token
-    },
-  },
   mounted () {
     this.getArea(this.id)
   },
   methods: {
+    ...mapActions({
+      show   : 'show',
+      update : 'update',
+      destroy: 'destroy',
+    }),
     getArea (id) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.get(`/areas/${id}`)
-          .then((response) => {
-            this.area   =  response.data.data
-            this.loaded = true
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+      this.show(id).then((response) => {
+        this.area =  response.data.data
+      }).catch((err) => {
+        this.serverErrors = Object.values(err.response.data.errors)
       })
     },
-    validateBeforeSubmit (id) {
+    validateBeforeSubmit (id, area) {
       this.$validator.validateAll().then((result) => {
         if (result)
-          this.updateArea(id)
+          this.updateArea(id, area)
       })
     },
-    updateArea (id) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.post(`/areas/${id}/update`, {
-          _method: 'PUT',
-          type   : this.area.type,
-          name   : this.area.name,
-          country: this.area.country,
-          city   : this.area.city,
-          IATA   : this.area.IATA,
-          ICAO   : this.area.ICAO,
-          FAA    : this.area.FAA,
-        })
-          .then((response) => {
-            this.successMessage = response.data.message
-            this.$router.push({ name: 'service areas list' })
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
+    updateArea (id, area) {
+      this.update({ id, area }).then(() => {
+        this.$router.push({ name: 'service areas list' })
       })
     },
     deleteArea (id) {
-      this.deleteWarning                             = false
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-      return new Promise((resolve, reject) => {
-        axios.delete(`/areas/${id}`, { _method: 'DELETE' })
-          .then((response) => {
-            this.successMessage = response.data.message
-            this.$router.push({ name: 'service areas list' })
-            resolve(response)
-          })
-          .catch((err) => {
-            this.serverErrors = Object.values(err.response.data.errors)
-            reject(err)
-          })
-      })
+      this.deleteWarning = false
+      this.destroy(id).then(() => this.$router.push({ name: 'service areas list' }))
     },
   },
 }
