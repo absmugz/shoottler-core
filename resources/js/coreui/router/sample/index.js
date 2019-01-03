@@ -36,16 +36,17 @@ import Bookings from '@/views/bookings/Bookings'
 import CreateBooking from '@/views/bookings/CreateBooking'
 import EditBooking from '@/views/bookings/EditBooking'
 import BookingsList from '@/views/bookings/BookingsList' */
+import HelloWorldModule from '../../../../../public/js/modules/HelloWorld/HelloWorldModule'
 function loadView (view, path) {
   return () => import(/* webpackChunkName: "view-[request]" */ `@/views/${path}/${view}.vue`)
 }
 export default [
-/*  base,
+  /*  base,
   buttons,
   icons,
   notifications,
   theme, */
-/*  {
+  /*  {
     path     : 'charts',
     name     : 'Charts',
     component: Charts,
@@ -60,6 +61,7 @@ export default [
     name     : 'Loading',
     component: Loading,
   }, */
+  HelloWorldModule.routes,
   {
     path     : 'settings',
     name     : 'Settings',

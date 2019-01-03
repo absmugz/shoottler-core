@@ -293,6 +293,10 @@ export default {
       url : '/app/settings',
       icon: 'icon-settings',
     },
-
+    {
+      name: 'Hello World!',
+      url : '/app/hello-world',
+      icon: '',
+    },
   ],
 }
