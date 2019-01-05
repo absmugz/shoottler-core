@@ -2,15 +2,14 @@
 
 namespace App\Models\Company;
 
-use App\Models\Area\Area;
-use App\Models\Area\Zone;
 use App\Models\Booking\Booking;
 use App\Models\Customer\Base\Customer;
-use App\Models\Items\Item;
-use App\Models\Items\Service;
 use App\Models\Resources\Vehicles\Vehicle;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
+use Modules\GeoSpatial\Entities\Area;
+use Modules\GeoSpatial\Entities\Zone;
+use Modules\Item\Entities\Item;
 
 class Company extends Model
 {
@@ -57,13 +56,6 @@ class Company extends Model
 	 */
     public function vehicles(){
     	return $this->hasMany(Vehicle::class);
-    }
-	/**
-	 * This company's services
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-    public function services(){
-    	return $this->hasMany(Service::class);
     }
 	/**
 	 * This company's items

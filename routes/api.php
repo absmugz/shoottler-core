@@ -24,16 +24,6 @@ Route::middleware('auth:api')->namespace('API')->group(function () {
 	Route::post('/companies/create','Company\CompanyController@store');
 	Route::post('/companies/set-default','Company\CompanyController@setDefault');
 	Route::delete('/companies/{id}','Company\CompanyController@destroy');
-	Route::get('/areas','Area\AreaController@index');
-	Route::get('/areas/{id}','Area\AreaController@show');
-	Route::put('/areas/{id}/update','Area\AreaController@update');
-	Route::post('areas/create','Area\AreaController@store');
-	Route::delete('areas/{id}','Area\AreaController@destroy');
-	Route::get('/zones','Zone\ZoneController@index');
-	Route::get('/zones/{id}','Zone\ZoneController@show');
-	Route::put('/zones/{id}/update','Zone\ZoneController@update');
-	Route::post('zones/create','Zone\ZoneController@store');
-	Route::delete('zones/{id}','Zone\ZoneController@destroy');
 	Route::get('/vehicles','Resource\Vehicle\VehicleController@index');
 	Route::get('/vehicles/{id}','Resource\Vehicle\VehicleController@show');
 	Route::put('/vehicles/{id}/update','Resource\Vehicle\VehicleController@update');
@@ -58,7 +48,7 @@ Route::middleware('auth:api')->namespace('API')->group(function () {
 	Route::delete('bookings/{id}','Booking\BookingController@destroy');
 });
 
-Route::post('/email/verification/status','API\AuthController@emailVerificationStatus');
+Route::post('/email/verification/status','API\Auth\AuthController@emailVerificationStatus');
 Route::post('/login', 'API\Auth\AuthController@login');
 Route::post('/register', 'API\Auth\AuthController@register');
 

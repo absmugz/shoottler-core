@@ -2,7 +2,7 @@
   <div class="sidebar">
     <SidebarHeader/>
     <SidebarForm/>
-    <company-switcher/>
+    <company-switcher v-if="showCompanySwitch"/>
     <nav class="sidebar-nav">
       <div slot="header"/>
 
@@ -95,7 +95,7 @@
       <slot/>
     </nav>
     <SidebarFooter/>
-    <SidebarMinimizer/>
+    <SidebarMinimizer v-if="showMinimizer"/>
   </div>
 </template>
 <script>
@@ -118,6 +118,8 @@ export default {
       required: true,
       default : () => [],
     },
+    showCompanySwitch: true,
+    showMinimizer    : true,
   },
   components: {
     SidebarFooter,
@@ -130,7 +132,7 @@ export default {
     SidebarNavTitle,
     SidebarNavItem,
     SidebarNavLabel,
-    CompanySwitcher
+    CompanySwitcher,
   },
   methods: {
     handleClick (e) {

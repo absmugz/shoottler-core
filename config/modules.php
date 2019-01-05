@@ -148,10 +148,10 @@ return [
     */
 
     'composer' => [
-        'vendor' => 'nwidart',
+        'vendor' => 'shoottler',
         'author' => [
-            'name' => 'Nicolas Widart',
-            'email' => 'n.widart@gmail.com',
+            'name' => 'Angel Formica',
+            'email' => 'angelformica@gmail.com',
         ],
     ],
     /*

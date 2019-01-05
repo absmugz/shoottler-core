@@ -2,7 +2,10 @@
   <div class="app">
     <AppHeader/>
     <div class="app-body">
-      <Sidebar :nav-items="nav"/>
+      <Sidebar
+        :nav-items="nav"
+        :show-company-switch="true"
+        :show-minimizer="true"/>
       <notifications
         class="custom-notifications"
         :style="{ 'margin-top': offset }" />

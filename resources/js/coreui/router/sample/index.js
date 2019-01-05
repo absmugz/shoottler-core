@@ -36,32 +36,12 @@ import Bookings from '@/views/bookings/Bookings'
 import CreateBooking from '@/views/bookings/CreateBooking'
 import EditBooking from '@/views/bookings/EditBooking'
 import BookingsList from '@/views/bookings/BookingsList' */
-import HelloWorldModule from '../../../../../public/js/modules/HelloWorld/HelloWorldModule'
+import GeoSpatialModule from '../../../../../Modules/GeoSpatial/Resources/assets/src/js/module'
+import ItemsModule from '../../../../../Modules/Item/Resources/assets/src/js/module'
 function loadView (view, path) {
   return () => import(/* webpackChunkName: "view-[request]" */ `@/views/${path}/${view}.vue`)
 }
 export default [
-  /*  base,
-  buttons,
-  icons,
-  notifications,
-  theme, */
-  /*  {
-    path     : 'charts',
-    name     : 'Charts',
-    component: Charts,
-  },
-  {
-    path     : 'widgets',
-    name     : 'Widgets',
-    component: Widgets,
-  },
-  {
-    path     : 'loading',
-    name     : 'Loading',
-    component: Loading,
-  }, */
-  HelloWorldModule.routes,
   {
     path     : 'settings',
     name     : 'Settings',
@@ -97,55 +77,7 @@ export default [
           },
         ],
       },
-      {
-        path     : 'service-areas',
-        name     : 'Service areas',
-        redirect : '/app/settings/service-areas/list',
-        component: loadView('ServiceAreas', 'settings/user/service-areas'),
-        children : [
-          {
-            path     : 'list',
-            name     : 'service areas list',
-            component: loadView('ServiceAreasList', 'settings/user/service-areas'),
-          },
-          {
-            path     : 'create',
-            name     : 'Create a service area',
-            component: loadView('CreateServiceArea', 'settings/user/service-areas'),
-          },
-          {
-            path     : 'edit/:id',
-            name     : 'Edit Service Area',
-            component: loadView('EditServiceArea', 'settings/user/service-areas'),
-            props    : true,
-          },
-        ],
-      },
-      {
-        path     : 'zones',
-        name     : 'Zones',
-        redirect : '/app/settings/zones/list',
-        component: loadView('Zones', 'settings/user/zones'),
-        children : [
-          {
-            path     : 'list',
-            name     : 'zones list',
-            component: loadView('ZonesList', 'settings/user/zones'),
-          },
-          {
-            path     : 'create',
-            name     : 'Create a zone',
-            component: loadView('CreateZone', 'settings/user/zones'),
-          },
-          {
-            path     : 'edit/:id',
-            name     : 'Edit Zone',
-            component: loadView('EditZone', 'settings/user/zones'),
-            props    : true,
-          },
-        ],
-      },
-
+      ...GeoSpatialModule.routes,
     ],
   },
   {
@@ -168,30 +100,6 @@ export default [
         path     : 'edit/:id',
         name     : 'Edit Vehicle',
         component: loadView('EditVehicle', 'vehicles'),
-        props    : true,
-      },
-    ],
-  },
-  {
-    path     : 'services',
-    name     : 'Services',
-    redirect : '/app/services/list',
-    component: loadView('Services', 'services'),
-    children : [
-      {
-        path     : 'list',
-        name     : 'services list',
-        component: loadView('ServicesList', 'services'),
-      },
-      {
-        path     : 'create',
-        name     : 'Create a service',
-        component: loadView('CreateService', 'services'),
-      },
-      {
-        path     : 'edit/:id',
-        name     : 'Edit Service',
-        component: loadView('EditService', 'services'),
         props    : true,
       },
     ],
@@ -244,4 +152,5 @@ export default [
       },
     ],
   },
+  ...ItemsModule.routes,
 ]
