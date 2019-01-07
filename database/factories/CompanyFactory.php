@@ -1,7 +1,7 @@
 <?php
 use Faker\Generator as Faker;
 
-$factory->define(\App\Company::class, function (Faker $faker) {
+$factory->define(\App\Models\Company\Company::class, function (Faker $faker) {
 	return [
 		'name' => $faker->company,
 		'brand' => $faker->company,

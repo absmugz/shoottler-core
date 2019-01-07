@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\User\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,6 +17,7 @@ class AuthController extends Controller
 	 * @param Request $request
 	 *
 	 * @return \Illuminate\Http\JsonResponse
+	 * @throws \GuzzleHttp\Exception\GuzzleException
 	 */
     public function login(Request $request){
     	return $this->getAccessToken(

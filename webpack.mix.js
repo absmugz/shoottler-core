@@ -20,15 +20,19 @@ mix.js('resources/js/app.js', 'public/js')
 mix.webpackConfig({
   resolve: {
     alias: {
-      '@'     : path.resolve(__dirname, 'resources/js/coreui/'),
+      '@'     : path.resolve(__dirname, 'resources/js/shoottler/'),
       'static': path.resolve(__dirname, 'resources/static/'),
     },
   },
   plugins: [new webpack.DefinePlugin({ __VERSION: JSON.stringify(version) })],
+  output : {
+    filename     : '[name].js',
+    chunkFilename: 'js/chunks/[name].js',
+  },
 })
 
 mix.extend('vueOptions', (webpackConfig, vueOptions, ...args) => {
-  const vueLoader = webpackConfig.module.rules.find(loader => loader.loader === 'vue-loader')
+  const vueLoader = webpackConfig.module.rules.find((loader) => loader.loader === 'vue-loader')
 
   vueLoader.options = require('webpack-merge').smart(vueLoader.options, vueOptions)
 })
@@ -46,6 +50,7 @@ mix.vueOptions({
   },
 })
 
+/*
 mix.extract([
   'axios',
   'bootstrap',
@@ -64,6 +69,7 @@ mix.extract([
   'vuejs-datepicker',
   'vuex',
 ])
+*/
 
 if (mix.inProduction())
   mix.version()

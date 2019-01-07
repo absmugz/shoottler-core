@@ -17,3 +17,5 @@ npm-debug.log
 yarn-error.log
 .env
 .DS_Store
+/Modules/
+!/public/images/icons/

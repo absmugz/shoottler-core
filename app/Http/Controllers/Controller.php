@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
-use GuzzleHttp\Psr7\Response;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -15,19 +14,21 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 	/**
-	 * Make an API request using Guzzle
+	 * Make an API Request
 	 *
 	 * @param $method
 	 * @param $url
 	 * @param array $params
 	 *
-	 * @return Response
+	 * @return mixed|\Psr\Http\Message\ResponseInterface
+	 * @throws \GuzzleHttp\Exception\GuzzleException
 	 */
 	protected function apiRequest($method, $url, $params =[]) {
 		$client = new Client(['verify'=>config('services.guzzle.verify_cert')]);
 		$response = $client->request($method, $url, $params);
 		return $response;
 	}
+
 	/**
 	 * Get an access token
 	 *
@@ -38,7 +39,8 @@ class Controller extends BaseController
 	 * @param null $userName
 	 * @param null $password
 	 *
-	 * @return \Illuminate\Http\JsonResponse
+	 * @return \Illuminate\Http\JsonResponse|\Psr\Http\Message\StreamInterface
+	 * @throws \GuzzleHttp\Exception\GuzzleException
 	 */
 	protected function getAccessToken($clientId, $clientSecret, $grantType, $url, $userName = null, $password = null) {
 		$params = [
