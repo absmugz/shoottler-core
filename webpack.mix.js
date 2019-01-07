@@ -20,7 +20,7 @@ mix.js('resources/js/app.js', 'public/js')
 mix.webpackConfig({
   resolve: {
     alias: {
-      '@'     : path.resolve(__dirname, 'resources/js/coreui/'),
+      '@'     : path.resolve(__dirname, 'resources/js/shoottler/'),
       'static': path.resolve(__dirname, 'resources/static/'),
     },
   },
