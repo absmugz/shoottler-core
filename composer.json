@@ -1,6 +1,7 @@
 {
     "name": "shoottler/shoottler-core",
     "description": "Manage any kind of bookable resources",
+    "version": "0.1.0-pre-alpha.1",
     "keywords": [
         "booking",
         "boilerplate",
