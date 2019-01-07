@@ -1,18 +1,18 @@
-# Laravel CoreUI Vue
+# Shoottler project
 
-> Laravel + CoreUI + Vue Boilerplate
+> Manage any kind of bookable resources
 
-[![GitHub version](https://badge.fury.io/gh/adenvt%2Flaravel-coreui-vue.svg)](https://badge.fury.io/gh/adenvt%2Flaravel-coreui-vue)
-[![Greenkeeper badge](https://badges.greenkeeper.io/adenvt/laravel-coreui-vue.svg)](https://greenkeeper.io/)
+We are on pre-alpha development stage. You can fork the project, and play around with the code to see what's comming, but we are not ready yet for an alpha version.
 
-## What's inside
-* [Laravel][laravel] 5.6, A PHP framework for web artisans
+## How it's build and special thanks to all the people behind these libraries:
+* [Laravel][laravel] 5.7, A PHP framework for web artisans
+* [Nicolas Widart][Nwidart] Laravel Modular Approach
+* [Ade Novid][Ade-Novid] Laravel + Core UI + [VUE Js][vuejs] boilerplate
 * [Core UI][coreui] for Vue, Free Bootstrap Admin Template
-* Usefull library: [Axios][axios], [jQuery][jquery], [Moment.js][moment], [Lodash][lodash]
+* [Axios][axios], [jQuery][jquery], [Moment.js][moment], [Lodash][lodash]
 * [Vue Router][vue-router] and [Vuex][vuex], set out of the box
 * Notification using [Vue-SweatAlert2][vue-sweatalert2] and [Vue-Notification][vue-notification]
 * Loading spinner with [Vue Loading Spinner][vue-loading-spinner]
-* Quick deployment with [Docker Compose][docker-compose] [TODO]
 
 ## Requirement
 * **PHP** >= 7.1.3
@@ -28,21 +28,19 @@
 * For Ubuntu, require `apt-get install libpng16-dev`, [see](https://github.com/imagemin/imagemin-mozjpeg/issues/28)
 
 ## How to Install
-* Install using composer
+
+* Install using git
 ```bash
-composer create-project --prefer-dist adenvt/laravel-coreui-vue project_name
+git clone https://github.com/shoottler/shoottler-core.git project_name
 ```
 * Install Dependencies
 ```bash
 cd project_name
-
+composer update
 npm install
+php artisan migrate
 ```
-* Add write permission (Unix)
-```bash
-chmod -R go+w storage bootstrap/cache
-```
-* Compile Static Asset
+* Compile Static Assets
 ```bash
 ## for Development
 npm run dev
@@ -50,14 +48,21 @@ npm run dev
 ## for Production
 npm run prod
 
-### for Development with HMR (Hot Module Replacement)
-npm run hot
 ```
+## Documentation
+Under development
+
+## Contributing
+We are on a very early stage of our project, we need all the help we can get to make Shoottler the next big booking management app.
+PRs accepted.
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+This project is licensed under the GPL-3.0 License - see the [LICENSE](LICENSE) file for details
 
 [laravel]: https://laravel.com
+[Ade-Novid]: https://github.com/adenvt/laravel-coreui-vue
+[vuejs]: https://vuejs.org/
+[Nwidart]: https://github.com/nWidart/laravel-modules
 [coreui]: https://coreui.io
 [axios]: https://github.com/axios/axios
 [jquery]: https://jquery.com/

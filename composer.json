@@ -1,14 +1,13 @@
 {
-    "name": "adenvt/laravel-coreui-vue",
-    "description": "Laravel + CoreUI + Vue Boilerplate",
+    "name": "shoottler/shoottler-core",
+    "description": "Manage any kind of bookable resources",
     "keywords": [
-        "framework",
+        "booking",
         "boilerplate",
         "laravel",
-        "coreui",
         "vue"
     ],
-    "license": "MIT",
+    "license": "GPL-3.0",
     "type": "project",
     "require": {
         "php": "^7.1.3",
@@ -24,6 +23,7 @@
         "laravel/tinker": "^1.0",
         "nanigans/single-table-inheritance": "0.8.*",
         "nwidart/laravel-modules": "^4.0",
+        "shoottler/item-module": "dev-master",
         "sofa/eloquence": "^5.6",
         "spatie/laravel-activitylog": "^3.1",
         "spatie/laravel-medialibrary": "^7.0.0"

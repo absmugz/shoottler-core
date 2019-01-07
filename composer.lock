@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "66cb215e719114a5c2e630ef5240296b",
+    "content-hash": "37c08930aebbc5c4a464c3c0b17bbcac",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -3230,6 +3230,46 @@
                 "uuid"
             ],
             "time": "2018-07-19T23:38:55+00:00"
+        },
+        {
+            "name": "shoottler/item-module",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/shoottler/item-module.git",
+                "reference": "4ca66a538e6df1e1d244323219c4b24380019b06"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/shoottler/item-module/zipball/4ca66a538e6df1e1d244323219c4b24380019b06",
+                "reference": "4ca66a538e6df1e1d244323219c4b24380019b06",
+                "shasum": ""
+            },
+            "require": {
+                "joshbrw/laravel-module-installer": "^0.1.4"
+            },
+            "type": "laravel-module",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Modules\\Item\\Providers\\ItemServiceProvider"
+                    ],
+                    "aliases": []
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Modules\\Item\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Angel Formica",
+                    "email": "angelformica@gmail.com"
+                }
+            ],
+            "time": "2019-01-05T05:17:08+00:00"
         },
         {
             "name": "sofa/eloquence",
@@ -6942,7 +6982,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "shoottler/item-module": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
